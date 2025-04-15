@@ -13,20 +13,20 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>{% block title %}easy-m{% endblock %}</title>
 </head>
 <body class="bg-gray-100 font-poppins">
-    <!-- Sidebar -->
+    <!-- Show sidebar only if user is authenticated and not on login/signup pages -->
+    {% if user.is_authenticated and not request.path == '/accounts/login/' and not request.path == '/accounts/signup/' %}
     <div class="fixed inset-y-0 left-0 w-64 bg-teal-600 text-white flex flex-col">
         <div class="p-6 text-2xl font-bold">
             <a href="#" class="logo">easy-m</a>
         </div>
         <nav class="flex-1">
             <ul class="space-y-2 p-4">
-                {% if user.is_authenticated %}
                 <li>
                     <a href="{% url 'dashboard' %}" class="flex items-center p-2 hover:bg-teal-700 rounded">
                         <i class="ri-dashboard-line mr-2"></i> Dashboard
@@ -42,19 +42,13 @@
                         <i class="ri-logout-box-line mr-2"></i> Logout
                     </a>
                 </li>
-                {% else %}
-                <li>
-                    <a href="{% url 'login' %}" class="flex items-center p-2 hover:bg-teal-700 rounded">
-                        <i class="ri-login-box-line mr-2"></i> Login
-                    </a>
-                </li>
-                {% endif %}
             </ul>
         </nav>
     </div>
+    {% endif %}
 
     <!-- Main Content -->
-    <div class="ml-64 p-6 min-h-screen">
+    <div class="{% if user.is_authenticated and not request.path == '/accounts/login/' and not request.path == '/accounts/signup/' %}ml-64 p-6{% endif %} min-h-screen">
         {% if messages %}
         <div class="messages">
             {% for message in messages %}
@@ -67,7 +61,8 @@
         {% block content %}{% endblock %}
     </div>
 
-    <!-- Footer -->
+    <!-- Show footer only if user is authenticated and not on login/signup pages -->
+    {% if user.is_authenticated and not request.path == '/accounts/login/' and not request.path == '/accounts/signup/' %}
     <footer class="bg-charcoal text-white p-6">
         <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
             <div class="mb-4 md:mb-0">
@@ -81,6 +76,7 @@
             </div>
         </div>
     </footer>
+    {% endif %}
 
     <!-- Scripts -->
     <script src="https://unpkg.com/scrollreveal"></script>
