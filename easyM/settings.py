@@ -124,3 +124,9 @@ STATICFILES_DIRS = [BASE_DIR / 'contributions' /"static"]
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# easy_m/settings.py
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Default backend
+    'accounts.backends.EmailBackend',  # Custom backend for email login
+]

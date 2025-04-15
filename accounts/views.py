@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm, LoginForm
 from .models import UserProfile
+from django.contrib.auth.models import User
 
 def signup(request):
     if request.method == 'POST':
@@ -25,13 +26,15 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'accounts/signup.html', {'form': form})
 
+# accounts/views.py
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = authenticate(request, username=User.objects.get(email=email).username, password=password)
+            # Authenticate using email directly
+            user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Welcome back, {user.profile.display_name}!")
