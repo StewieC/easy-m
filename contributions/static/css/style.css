@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    list-style: none;
+    text-decoration: none;
+}
+
+body {
+    background-color: #F7F7F7; /* Warm Gray */
+}
+
+/* Logo */
+.logo {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white;
+}
+
+/* Custom Colors for Tailwind */
+:root {
+    --teal-600: #4ABDAC;
+    --charcoal: #333333;
+    --coral: #FC4A1A;
+}
+
+/* Messages Styling */
+.messages p {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+.messages p.success {
+    background-color: #4ABDAC;
+    color: white;
+}
+.messages p.error {
+    background-color: #FC4A1A;
+    color: white;
+}
+
+/* Form Styling */
+form p {
+    margin-bottom: 1rem;
+}
+form label {
+    display: block;
+    color: #333333;
+    margin-bottom: 0.5rem;
+}
+form input[type="text"],
+form input[type="number"],
+form select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+form input[type="text"]:focus,
+form input[type="number"]:focus,
+form select:focus {
+    border-color: #4ABDAC;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+table th,
+table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+table thead tr {
+    border-bottom: 2px solid #d1d5db;
+}
+table tbody tr {
+    border-bottom: 1px solid #e5e7eb;
+}
+table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* Footer */
+footer {
+    background-color: #333333;
+}

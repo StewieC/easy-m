@@ -1,0 +1,17 @@
+{% extends 'contributions/base.html' %}
+
+{% block title %}Create Group - easy-m{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold text-charcoal mb-6">Create a New Group</h1>
+    <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition w-full">Create Group</button>
+        </form>
+        <a href="{% url 'dashboard' %}" class="block text-center text-teal-600 hover:underline mt-4">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

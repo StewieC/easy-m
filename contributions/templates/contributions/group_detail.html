@@ -1,0 +1,65 @@
+{% extends 'contributions/base.html' %}
+
+{% block title %}{{ group.name }} Details - easy-m{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold text-charcoal mb-6">{{ group.name }} Details</h1>
+
+    <!-- Group Overview -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <p class="text-gray-600"><strong>Created At:</strong> {{ group.created_at|date:"D, d M Y, h:i A" }}</p>
+        <p class="text-gray-600 mt-2"><strong>Admin:</strong> {{ group.admin.username }}</p>
+        <p class="text-gray-600 mt-2"><strong>Weekly Contribution:</strong> KES {{ group.weekly_contribution }}</p>
+        <p class="text-gray-600 mt-2"><strong>Total Group Balance:</strong> KES {{ total_balance }}</p>
+    </div>
+
+    <!-- Contribute Form -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold text-charcoal mb-4">Make a Contribution</h2>
+        <form method="post" action="{% url 'contribute' %}" class="flex space-x-4">
+            {% csrf_token %}
+            <input type="hidden" name="group_id" value="{{ group.id }}">
+            <input type="number" name="amount" placeholder="Amount to contribute (KES)" class="border rounded px-3 py-2 flex-1" required>
+            <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition">Contribute</button>
+        </form>
+        <a href="{% url 'contribution_history' group.id %}" class="block text-teal-600 hover:underline mt-4">View Contribution History</a>
+    </div>
+
+    <!-- Next Payout -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold text-charcoal mb-4">Next Payout</h2>
+        <p class="text-gray-600"><strong>Member:</strong> {{ next_member.username }}</p>
+        <p class="text-gray-600 mt-2"><strong>Date:</strong> {{ next_payout_date|date:"D, d M Y, h:i A" }}</p>
+        <p class="text-gray-600 mt-2"><strong>Amount:</strong> KES {{ total_balance|floatformat:2 }}</p>
+    </div>
+
+    <!-- Members List -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold text-charcoal mb-4">Members</h2>
+        <ul class="list-disc pl-5">
+            {% for member in group.members.all %}
+            <li class="text-gray-600">{{ member.username }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Admin Actions -->
+    {% if user == group.admin %}
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold text-charcoal mb-4">Manage Members</h2>
+        <form method="post" action="{% url 'group_detail' group.id %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="manage_member" class="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition w-full">Submit</button>
+        </form>
+        {% if group.join_code %}
+        <p class="text-gray-600 mt-4"><strong>Join Code:</strong> <span class="text-coral">{{ group.join_code }}</span></p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Back Link -->
+    <a href="{% url 'dashboard' %}" class="text-teal-600 hover:underline">Back to Dashboard</a>
+</div>
+{% endblock %}

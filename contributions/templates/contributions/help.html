@@ -1,0 +1,107 @@
+{% extends 'contributions/base.html' %}
+
+{% block title %}Help - easy-m{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold text-charcoal mb-6">Help Guide</h1>
+
+    <!-- Navigation -->
+    <nav class="bg-white p-4 rounded-lg shadow-md mb-6">
+        <ul class="flex flex-wrap gap-4">
+            <li><a href="#getting-started" class="text-teal-600 hover:underline">Getting Started</a></li>
+            <li><a href="#dashboard" class="text-teal-600 hover:underline">Dashboard</a></li>
+            <li><a href="#creating-group" class="text-teal-600 hover:underline">Creating a Group</a></li>
+            <li><a href="#joining-group" class="text-teal-600 hover:underline">Joining a Group</a></li>
+            <li><a href="#contributing" class="text-teal-600 hover:underline">Making a Contribution</a></li>
+            <li><a href="#payouts" class="text-teal-600 hover:underline">Understanding Payouts</a></li>
+            <li><a href="#history" class="text-teal-600 hover:underline">Viewing Contribution History</a></li>
+            <li><a href="#group-management" class="text-teal-600 hover:underline">Group Management</a></li>
+        </ul>
+    </nav>
+
+    <!-- Sections -->
+    <div class="space-y-8">
+        <section id="getting-started" class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-charcoal mb-4">Getting Started</h2>
+            <p class="text-gray-600">Welcome to easy-m! This app helps users manage group contributions, payouts, and group finances seamlessly. To get started:</p>
+            <ul class="list-disc pl-5 mt-2 text-gray-600">
+                <li>Log in or create an account to access the dashboard.</li>
+                <li>Join or create a group to begin managing contributions.</li>
+            </ul>
+        </section>
+
+        <section id="dashboard" class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-charcoal mb-4">Dashboard</h2>
+            <p class="text-gray-600">The dashboard is your main hub. From here, you can:</p>
+            <ul class="list-disc pl-5 mt-2 text-gray-600">
+                <li>View the groups you are a member of.</li>
+                <li>Click on a group to view its details, including balances and payouts.</li>
+                <li>Access options to join or create new groups.</li>
+            </ul>
+        </section>
+
+        <section id="creating-group" class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-charcoal mb-4">Creating a Group</h2>
+            <p class="text-gray-600">To create a new group:</p>
+            <ol class="list-decimal pl-5 mt-2 text-gray-600">
+                <li>Click the "Create Group" button on the dashboard.</li>
+                <li>Provide the group name, weekly contribution amount, interest rate, and payout cycle length.</li>
+                <li>Click "Submit" to create the group. You will automatically be set as the group admin.</li>
+            </ol>
+        </section>
+
+        <section id="joining-group" class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-charcoal mb-4">Joining a Group</h2>
+            <p class="text-gray-600">To join an existing group:</p>
+            <ol class="list-decimal pl-5 mt-2 text-gray-600">
+                <li>Click the "Join Group" button on the dashboard.</li>
+                <li>Enter the unique group code provided by the group's admin.</li>
+                <li>Click "Join" to become a member of the group.</li>
+            </ol>
+        </section>
+
+        <section id="contributing" class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-charcoal mb-4">Making a Contribution</h2>
+            <p class="text-gray-600">To contribute to a group:</p>
+            <ol class="list-decimal pl-5 mt-2 text-gray-600">
+                <li>Go to the group’s details page.</li>
+                <li>Click the "Contribute" button.</li>
+                <li>Enter the amount you want to contribute and click "Submit".</li>
+                <li>The app will redirect you to a payment gateway to complete the transaction.</li>
+            </ol>
+        </section>
+
+        <section id="payouts" class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-charcoal mb-4">Understanding Payouts</h2>
+            <p class="text-gray-600">Payouts are distributed based on the group’s payout cycle settings. To view details about payouts:</p>
+            <ul class="list-disc pl-5 mt-2 text-gray-600">
+                <li>Go to the group’s details page to see the next recipient, date, and expected payout amount.</li>
+                <li>Payouts are scheduled on Sundays at 8:00 AM, following alphabetical order of members.</li>
+            </ul>
+        </section>
+
+        <section id="history" class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-charcoal mb-4">Viewing Contribution History</h2>
+            <p class="text-gray-600">To view a group’s contribution history:</p>
+            <ol class="list-decimal pl-5 mt-2 text-gray-600">
+                <li>Go to the group’s details page.</li>
+                <li>Click the "View Contribution History" button.</li>
+                <li>You’ll see a detailed table of contributions, including member names, amounts, and dates.</li>
+            </ol>
+        </section>
+
+        <section id="group-management" class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-charcoal mb-4">Group Management</h2>
+            <p class="text-gray-600">Admins can manage their groups by:</p>
+            <ul class="list-disc pl-5 mt-2 text-gray-600">
+                <li>Generating join codes for new members.</li>
+                <li>Adding or removing members (except the admin).</li>
+                <li>Viewing and managing contributions and payouts.</li>
+            </ul>
+        </section>
+    </div>
+
+    <a href="{% url 'dashboard' %}" class="text-teal-600 hover:underline mt-6 inline-block">Back to Dashboard</a>
+</div>
+{% endblock %}
