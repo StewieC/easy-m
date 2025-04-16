@@ -4,22 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Boxicons CSS -->
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-    <!-- Remixicons CSS -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>{% block title %}easy-m{% endblock %}</title>
 </head>
 <body class="bg-gray-100 font-poppins">
-    <!-- Show sidebar only if user is authenticated and not on login/signup pages -->
     {% if user.is_authenticated and not request.path == '/accounts/login/' and not request.path == '/accounts/signup/' %}
     <div class="fixed inset-y-0 left-0 w-64 bg-teal-600 text-white flex flex-col">
         <div class="p-6 text-2xl font-bold">
@@ -33,7 +27,17 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'help_page' %}" class="flex items-center p-2 hover:bg-teal-700 rounded">
+                    <a href="{% url 'create_group' %}" class="flex items-center p-2 hover:bg-teal-700 rounded">
+                        <i class="ri-group-line mr-2"></i> Create Group
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'join_group' %}" class="flex items-center p-2 hover:bg-teal-700 rounded">
+                        <i class="ri-user-add-line mr-2"></i> Join Group
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-2 hover:bg-teal-700 rounded">
                         <i class="ri-question-line mr-2"></i> Help
                     </a>
                 </li>
@@ -47,7 +51,6 @@
     </div>
     {% endif %}
 
-    <!-- Main Content -->
     <div class="{% if user.is_authenticated and not request.path == '/accounts/login/' and not request.path == '/accounts/signup/' %}ml-64 p-6{% endif %} min-h-screen">
         {% if messages %}
         <div class="messages">
@@ -61,7 +64,6 @@
         {% block content %}{% endblock %}
     </div>
 
-    <!-- Show footer only if user is authenticated and not on login/signup pages -->
     {% if user.is_authenticated and not request.path == '/accounts/login/' and not request.path == '/accounts/signup/' %}
     <footer class="bg-charcoal text-white p-6">
         <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
@@ -78,7 +80,6 @@
     </footer>
     {% endif %}
 
-    <!-- Scripts -->
     <script src="https://unpkg.com/scrollreveal"></script>
     <script src="{% static 'js/script.js' %}"></script>
 </body>

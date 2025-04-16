@@ -1,65 +1,73 @@
 {% extends 'contributions/base.html' %}
 
-{% block title %}{{ group.name }} Details - easy-m{% endblock %}
+{% block title %}{{ group.name }} - easy-m{% endblock %}
 
 {% block content %}
 <div class="container mx-auto py-8">
-    <h1 class="text-3xl font-bold text-charcoal mb-6">{{ group.name }} Details</h1>
-
-    <!-- Group Overview -->
+    <h1 class="text-3xl font-bold text-charcoal mb-6" style="font-family: 'Dancing Script', cursive;">{{ group.name }}</h1>
+    
     <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-        <p class="text-gray-600"><strong>Created At:</strong> {{ group.created_at|date:"D, d M Y, h:i A" }}</p>
-        <p class="text-gray-600 mt-2"><strong>Admin:</strong> {{ group.admin.username }}</p>
-        <p class="text-gray-600 mt-2"><strong>Weekly Contribution:</strong> KES {{ group.weekly_contribution }}</p>
-        <p class="text-gray-600 mt-2"><strong>Total Group Balance:</strong> KES {{ total_balance }}</p>
+        <h2 class="text-xl font-semibold text-charcoal mb-4">Group Details</h2>
+        <p><strong>Type:</strong> {{ group.get_group_type_display }}</p>
+        <p><strong>Admin:</strong> {{ group.admin.username }}</p>
+        <p><strong>Phone Number:</strong> {{ group.phone_number }}</p>
+        {% if group.group_type == 'merry_go_round' %}
+            <p><strong>Contribution Amount:</strong> {{ group.amount }} KSH</p>
+            <p><strong>Contribution Period:</strong> {{ group.contribution_period }}</p>
+            <p><strong>Payout Cycle:</strong> {{ group.payout_cycle }}</p>
+            <p><strong>Savings Enabled:</strong> {{ group.savings_enabled|yesno:"Yes,No" }}</p>
+            {% if group.savings_enabled %}
+                <p><strong>Savings Amount:</strong> {{ group.savings_amount }} KSH</p>
+            {% endif %}
+            <p><strong>Description:</strong> {{ group.description }}</p>
+        {% endif %}
     </div>
 
-    <!-- Contribute Form -->
-    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 class="text-xl font-semibold text-charcoal mb-4">Make a Contribution</h2>
-        <form method="post" action="{% url 'contribute' %}" class="flex space-x-4">
-            {% csrf_token %}
-            <input type="hidden" name="group_id" value="{{ group.id }}">
-            <input type="number" name="amount" placeholder="Amount to contribute (KES)" class="border rounded px-3 py-2 flex-1" required>
-            <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition">Contribute</button>
-        </form>
-        <a href="{% url 'contribution_history' group.id %}" class="block text-teal-600 hover:underline mt-4">View Contribution History</a>
-    </div>
-
-    <!-- Next Payout -->
-    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 class="text-xl font-semibold text-charcoal mb-4">Next Payout</h2>
-        <p class="text-gray-600"><strong>Member:</strong> {{ next_member.username }}</p>
-        <p class="text-gray-600 mt-2"><strong>Date:</strong> {{ next_payout_date|date:"D, d M Y, h:i A" }}</p>
-        <p class="text-gray-600 mt-2"><strong>Amount:</strong> KES {{ total_balance|floatformat:2 }}</p>
-    </div>
-
-    <!-- Members List -->
     <div class="bg-white p-6 rounded-lg shadow-md mb-6">
         <h2 class="text-xl font-semibold text-charcoal mb-4">Members</h2>
         <ul class="list-disc pl-5">
             {% for member in group.members.all %}
-            <li class="text-gray-600">{{ member.username }}</li>
+                <li>{{ member.username }} {% if member == group.admin %}(Admin){% endif %}</li>
+            {% empty %}
+                <li>No members yet.</li>
             {% endfor %}
         </ul>
     </div>
 
-    <!-- Admin Actions -->
-    {% if user == group.admin %}
+    {% if request.user == group.admin %}
     <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 class="text-xl font-semibold text-charcoal mb-4">Manage Members</h2>
-        <form method="post" action="{% url 'group_detail' group.id %}">
+        <h2 class="text-xl font-semibold text-charcoal mb-4">Admin Actions</h2>
+        
+        <!-- Add User -->
+        <form method="post" class="mb-4">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" name="manage_member" class="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition w-full">Submit</button>
+            <div class="flex items-center space-x-4">
+                <input type="email" name="email" placeholder="User email" class="border rounded px-3 py-2 w-full" required>
+                <button type="submit" name="add_user" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Add User</button>
+            </div>
         </form>
-        {% if group.join_code %}
-        <p class="text-gray-600 mt-4"><strong>Join Code:</strong> <span class="text-coral">{{ group.join_code }}</span></p>
-        {% endif %}
+
+        <!-- Remove User -->
+        <form method="post" class="mb-4">
+            {% csrf_token %}
+            <div class="flex items-center space-x-4">
+                <label for="user-select" class="sr-only">Select User</label>
+                <select id="user-select" name="user_id" class="border rounded px-3 py-2 w-full">
+                    {% for member in group.members.all %}
+                        {% if member != group.admin %}
+                            <option value="{{ member.id }}">{{ member.username }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <button type="submit" name="remove_user" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Remove User</button>
+            </div>
+        </form>
+
+        <!-- Join Code -->
+        <div class="flex items-center space-x-4">
+            <p><strong>Join Code:</strong> {{ group.join_code }}</p>
+        </div>
     </div>
     {% endif %}
-
-    <!-- Back Link -->
-    <a href="{% url 'dashboard' %}" class="text-teal-600 hover:underline">Back to Dashboard</a>
 </div>
 {% endblock %}

@@ -3,15 +3,17 @@
 {% block title %}Create Group - easy-m{% endblock %}
 
 {% block content %}
-<div class="container mx-auto py-8">
-    <h1 class="text-3xl font-bold text-charcoal mb-6">Create a New Group</h1>
-    <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-teal-600 to-coral animate-gradient">
+    <div class="glass-card p-8 rounded-2xl shadow-lg max-w-sm w-full">
+        <h1 class="text-3xl font-bold text-charcoal mb-6 text-center" style="font-family: 'Dancing Script', cursive;">Create a Group</h1>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition w-full">Create Group</button>
+            <div class="mb-4">
+                <label for="group_type" class="block text-charcoal mb-2">Group Type</label>
+                {{ form.group_type }}
+            </div>
+            <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition w-full">Next</button>
         </form>
-        <a href="{% url 'dashboard' %}" class="block text-center text-teal-600 hover:underline mt-4">Back to Dashboard</a>
     </div>
 </div>
 {% endblock %}

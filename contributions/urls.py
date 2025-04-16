@@ -1,14 +1,13 @@
-# urls.py
+# contributions/urls.py
 from django.urls import path
 from . import views
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
-    path('contribute/', views.contribute, name='contribute'),
-    path('cycle/', views.manage_cycle, name='cycle'),
+    path('create-group/', views.create_group, name='create_group'),
+    path('create-contribution-group/', views.create_contribution_group, name='create_contribution_group'),
+    path('create-merry-go-round-group/', views.create_merry_go_round_group, name='create_merry_go_round_group'),
     path('group/<int:group_id>/', views.group_detail, name='group_detail'),
-    path('create_group/', views.create_group, name='create_group'),
-    path('join_group/', views.join_group, name='join_group'),
-    path('group/<int:group_id>/history/', views.contribution_history, name='contribution_history'),
-    path('help/', views.help_page, name='help_page'),
+    path('join-group/', views.join_group, name='join_group'),
+    # path('help/', views.help_page, name='help_page'),
 ]

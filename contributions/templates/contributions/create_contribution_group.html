@@ -1,0 +1,23 @@
+{% extends 'contributions/base.html' %}
+
+{% block title %}Create Contribution Group - easy-m{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-teal-600 to-coral animate-gradient">
+    <div class="glass-card p-8 rounded-2xl shadow-lg max-w-sm w-full">
+        <h1 class="text-3xl font-bold text-charcoal mb-6 text-center" style="font-family: 'Dancing Script', cursive;">Contribution Group</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-4 relative">
+                <i class="ri-group-line absolute text-gray-500 left-3 top-1/2 transform -translate-y-1/2"></i>
+                {{ form.name }}
+            </div>
+            <div class="mb-4 relative">
+                <i class="ri-phone-line absolute text-gray-500 left-3 top-1/2 transform -translate-y-1/2"></i>
+                {{ form.phone_number }}
+            </div>
+            <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition w-full">Create Group</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
