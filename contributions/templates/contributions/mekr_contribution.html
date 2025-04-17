@@ -1,0 +1,17 @@
+{% extends 'contributions/base.html' %}
+
+{% block title %}Contribute to {{ group.name }} - easy-m{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold text-charcoal mb-6" style="font-family: 'Dancing Script', cursive;">Contribute to {{ group.name }}</h1>
+    <form method="post" class="max-w-sm">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="amount" class="block text-charcoal mb-2">Amount (KSH)</label>
+            {{ form.amount }}
+        </div>
+        <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition w-full">Contribute</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,6 +1,6 @@
 # contributions/forms.py
 from django import forms
-from .models import Group
+from .models import Group, Contribution
 
 class GroupTypeForm(forms.Form):
     group_type = forms.ChoiceField(choices=Group.GROUP_TYPES, widget=forms.Select(attrs={'class': 'border rounded px-3 py-2 w-full'}))
@@ -48,3 +48,18 @@ class MerryGoRoundGroupForm(forms.ModelForm):
         if savings_enabled and (savings_amount is None or savings_amount <= 0):
             raise forms.ValidationError("Please provide a valid savings amount when savings is enabled.")
         return cleaned_data
+
+class ContributionForm(forms.ModelForm):
+    class Meta:
+        model = Contribution
+        fields = ['amount']
+        widgets = {
+            'amount': forms.NumberInput(attrs={'class': 'border rounded px-3 py-2 w-full', 'placeholder': 'Amount to Contribute'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.group = kwargs.pop('group', None)
+        super().__init__(*args, **kwargs)
+        if self.group and self.group.group_type == 'merry_go_round':
+            self.fields['amount'].initial = self.group.amount
+            self.fields['amount'].widget.attrs['readonly'] = True

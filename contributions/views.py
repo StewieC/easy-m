@@ -2,13 +2,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Group
-from .forms import GroupTypeForm, ContributionGroupForm, MerryGoRoundGroupForm
+from .models import Group, Contribution, Payout
+from .forms import GroupTypeForm, ContributionGroupForm, MerryGoRoundGroupForm, ContributionForm
 from django.contrib.auth.models import User
+from datetime import datetime
 
 @login_required
 def dashboard(request):
-    groups = request.user.group_memberships.all()  # Changed from groups to group_memberships
+    groups = request.user.group_memberships.all()
     return render(request, 'contributions/dashboard.html', {'groups': groups})
 
 @login_required
@@ -87,9 +88,46 @@ def group_detail(request, group_id):
             else:
                 messages.error(request, "Cannot remove the group admin.")
         
+        elif 'make_payout' in request.POST and group.group_type == 'merry_go_round':
+            if request.user == group.admin:
+                next_payout = group.get_next_payout()
+                if next_payout:
+                    Payout.objects.create(
+                        group=group,
+                        recipient=next_payout['recipient'],
+                        amount=next_payout['amount']
+                    )
+                    group.last_payout_date = datetime.now()
+                    group.save()
+                    messages.success(request, f"Payout of {next_payout['amount']} KSH made to {next_payout['recipient'].username}.")
+                else:
+                    messages.error(request, "No members available for payout.")
+            else:
+                messages.error(request, "Only the admin can make payouts.")
+        
         return redirect('group_detail', group_id=group.id)
 
     return render(request, 'contributions/group_detail.html', {'group': group})
+
+@login_required
+def make_contribution(request, group_id):
+    group = get_object_or_404(Group, id=group_id)
+    if request.user not in group.members.all():
+        messages.error(request, "You are not a member of this group.")
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        form = ContributionForm(request.POST, group=group)
+        if form.is_valid():
+            contribution = form.save(commit=False)
+            contribution.group = group
+            contribution.user = request.user
+            contribution.save()
+            messages.success(request, f"Contributed {contribution.amount} KSH to {group.name}.")
+            return redirect('group_detail', group_id=group.id)
+    else:
+        form = ContributionForm(group=group)
+    return render(request, 'contributions/make_contribution.html', {'form': form, 'group': group})
 
 @login_required
 def join_group(request):
@@ -104,5 +142,5 @@ def join_group(request):
         return redirect('group_detail', group_id=group.id)
     return render(request, 'contributions/join_group.html')
 
-def help_page(request):
-    return render(request, 'contributions/help.html')
+# def help_page(request):
+#     return render(request, 'contributions/help.html')

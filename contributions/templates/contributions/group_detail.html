@@ -34,6 +34,75 @@
         </ul>
     </div>
 
+    <!-- Contribution Section -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold text-charcoal mb-4">Make a Contribution</h2>
+        <a href="{% url 'make_contribution' group.id %}" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Contribute</a>
+    </div>
+
+    <!-- Contribution History -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold text-charcoal mb-4">Contribution History</h2>
+        <p><strong>Total Contributions:</strong> {{ group.total_contributions }} KSH</p>
+        {% if group.contributions.all %}
+            <table class="w-full mt-4">
+                <thead>
+                    <tr>
+                        <th class="text-left">User</th>
+                        <th class="text-left">Amount (KSH)</th>
+                        <th class="text-left">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contribution in group.contributions.all %}
+                        <tr>
+                            <td>{{ contribution.user.username }}</td>
+                            <td>{{ contribution.amount }}</td>
+                            <td>{{ contribution.date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No contributions yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Merry-Go-Round Payout Information -->
+    {% if group.group_type == 'merry_go_round' %}
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold text-charcoal mb-4">Next Payout</h2>
+        {% with next_payout=group.get_next_payout %}
+            {% if next_payout %}
+                <p><strong>Recipient:</strong> {{ next_payout.recipient.username }}</p>
+                <p><strong>Amount:</strong> {{ next_payout.amount }} KSH</p>
+                <p><strong>Date:</strong> {{ next_payout.date }}</p>
+                {% if request.user == group.admin %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="make_payout" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 mt-4">Make Payout</button>
+                    </form>
+                {% endif %}
+            {% else %}
+                <p>No members available for payout.</p>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold text-charcoal mb-4">Last Payout</h2>
+        {% with last_payout=group.payouts.order_by('-date').first %}
+            {% if last_payout %}
+                <p><strong>Recipient:</strong> {{ last_payout.recipient.username }}</p>
+                <p><strong>Amount:</strong> {{ last_payout.amount }} KSH</p>
+                <p><strong>Date:</strong> {{ last_payout.date }}</p>
+            {% else %}
+                <p>No payouts have been made yet.</p>
+            {% endif %}
+        {% endwith %}
+    </div>
+    {% endif %}
+
     {% if request.user == group.admin %}
     <div class="bg-white p-6 rounded-lg shadow-md mb-6">
         <h2 class="text-xl font-semibold text-charcoal mb-4">Admin Actions</h2>
@@ -51,8 +120,7 @@
         <form method="post" class="mb-4">
             {% csrf_token %}
             <div class="flex items-center space-x-4">
-                <label for="user-select" class="sr-only">Select User</label>
-                <select id="user-select" name="user_id" class="border rounded px-3 py-2 w-full">
+                <select name="user_id" class="border rounded px-3 py-2 w-full">
                     {% for member in group.members.all %}
                         {% if member != group.admin %}
                             <option value="{{ member.id }}">{{ member.username }}</option>
