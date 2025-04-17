@@ -14,7 +14,7 @@ class Group(models.Model):
     group_type = models.CharField(max_length=20, choices=GROUP_TYPES, default= 'Contributions')
     admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='admin_groups')
     members = models.ManyToManyField(User, related_name='group_memberships')
-    phone_number = models.CharField(max_length=15, default=None)
+    phone_number = models.CharField(max_length=15, default="+254000000000")
     join_code = models.CharField(max_length=36, unique=True, default=uuid.uuid4)
     
     # Merry-Go-Round specific fields
