@@ -91,15 +91,13 @@
 
     <div class="bg-white p-6 rounded-lg shadow-md mb-6">
         <h2 class="text-xl font-semibold text-charcoal mb-4">Last Payout</h2>
-        {% with last_payout=group.payouts.order_by('-date').first %}
-            {% if last_payout %}
-                <p><strong>Recipient:</strong> {{ last_payout.recipient.username }}</p>
-                <p><strong>Amount:</strong> {{ last_payout.amount }} KSH</p>
-                <p><strong>Date:</strong> {{ last_payout.date }}</p>
-            {% else %}
-                <p>No payouts have been made yet.</p>
-            {% endif %}
-        {% endwith %}
+        {% if last_payout %}
+            <p><strong>Recipient:</strong> {{ last_payout.recipient.username }}</p>
+            <p><strong>Amount:</strong> {{ last_payout.amount }} KSH</p>
+            <p><strong>Date:</strong> {{ last_payout.date }}</p>
+        {% else %}
+            <p>No payouts have been made yet.</p>
+        {% endif %}
     </div>
     {% endif %}
 
@@ -120,7 +118,8 @@
         <form method="post" class="mb-4">
             {% csrf_token %}
             <div class="flex items-center space-x-4">
-                <select name="user_id" class="border rounded px-3 py-2 w-full">
+                <label for="user-select" class="sr-only">Select User</label>
+                <select id="user-select" name="user_id" class="border rounded px-3 py-2 w-full">
                     {% for member in group.members.all %}
                         {% if member != group.admin %}
                             <option value="{{ member.id }}">{{ member.username }}</option>

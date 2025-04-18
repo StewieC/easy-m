@@ -148,5 +148,5 @@ def join_group(request):
         return redirect('group_detail', group_id=group.id)
     return render(request, 'contributions/join_group.html')
 
-def help_page(request):
-    return render(request, 'contributions/help.html')
+# def help_page(request):
+#     return render(request, 'contributions/help.html')
