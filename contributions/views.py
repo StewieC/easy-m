@@ -66,6 +66,9 @@ def group_detail(request, group_id):
         messages.error(request, "You do not have permission to view this group.")
         return redirect('dashboard')
     
+    # Get the last payout for Merry-Go-Round groups
+    last_payout = group.payouts.order_by('-date').first() if group.group_type == 'merry_go_round' else None
+
     if request.method == 'POST':
         if 'add_user' in request.POST:
             email = request.POST.get('email')
@@ -107,7 +110,10 @@ def group_detail(request, group_id):
         
         return redirect('group_detail', group_id=group.id)
 
-    return render(request, 'contributions/group_detail.html', {'group': group})
+    return render(request, 'contributions/group_detail.html', {
+        'group': group,
+        'last_payout': last_payout,  # Pass last_payout to the template
+    })
 
 @login_required
 def make_contribution(request, group_id):
@@ -142,5 +148,5 @@ def join_group(request):
         return redirect('group_detail', group_id=group.id)
     return render(request, 'contributions/join_group.html')
 
-# def help_page(request):
-#     return render(request, 'contributions/help.html')
+def help_page(request):
+    return render(request, 'contributions/help.html')
