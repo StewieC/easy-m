@@ -11,10 +11,10 @@ class Group(models.Model):
     )
     
     name = models.CharField(max_length=100)
-    group_type = models.CharField(max_length=20, choices=GROUP_TYPES, default= 'Contributions')
+    group_type = models.CharField(max_length=20, choices=GROUP_TYPES, default='contribution')  # Fixed default value
     admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='admin_groups')
     members = models.ManyToManyField(User, related_name='group_memberships')
-    phone_number = models.CharField(max_length=15, default="+2547000000000")  # Default phone number format
+    phone_number = models.CharField(max_length=15, default="+254700000000")  # Fixed default phone number
     join_code = models.CharField(max_length=36, unique=True, default=uuid.uuid4)
         
     # Merry-Go-Round specific fields
@@ -24,12 +24,16 @@ class Group(models.Model):
     savings_enabled = models.BooleanField(default=False)
     savings_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     description = models.TextField(blank=True)
-    last_payout_date = models.DateTimeField(null=True, blank=True)  # Track the last payout date
+    last_payout_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
+        # Save the instance first to generate an ID
+        super().save(*args, **kwargs)
+
+        # Now we can safely access many-to-many fields
         if self.group_type == 'merry_go_round' and self.amount and self.contribution_period:
             member_count = self.members.count() or 3
             savings_text = f"with each member saving {self.savings_amount} KSH per cycle" if self.savings_enabled else "with full payouts to one member each cycle"
@@ -37,29 +41,26 @@ class Group(models.Model):
                 f"This is a Merry-Go-Round group where {member_count} members contribute {self.amount} KSH "
                 f"{self.contribution_period}. Payouts occur {self.payout_cycle}, {savings_text}."
             )
-        super().save(*args, **kwargs)
+            # Save again to update the description
+            super().save(*args, **kwargs)
 
     def get_next_payout(self):
         if self.group_type != 'merry_go_round':
             return None
         
-        # Calculate the next payout date based on the payout cycle
         if not self.last_payout_date:
-            # If no payout has happened, assume the first payout is today
             last_date = datetime.now()
         else:
             last_date = self.last_payout_date
 
-        # Map payout cycle to days
         cycle_days = {
             'daily': 1,
             'weekly': 7,
             'monthly': 30,
         }
-        days = cycle_days.get(self.payout_cycle, 7)  # Default to weekly if not specified
+        days = cycle_days.get(self.payout_cycle, 7)
         next_date = last_date + timedelta(days=days)
 
-        # Determine the next recipient (rotate through members)
         members = list(self.members.all())
         if not members:
             return None
@@ -74,7 +75,6 @@ class Group(models.Model):
 
         next_recipient = members[next_index]
         
-        # Calculate payout amount
         member_count = len(members)
         if self.savings_enabled:
             payout_amount = (self.amount * member_count) - (self.savings_amount * member_count)
