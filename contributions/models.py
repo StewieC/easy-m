@@ -35,10 +35,10 @@ class Group(models.Model):
 
         # Now we can safely access many-to-many fields
         if self.group_type == 'merry_go_round' and self.amount and self.contribution_period:
-            member_count = self.members.count() or 3
+            member_count = self.members.count() 
             savings_text = f"with each member saving {self.savings_amount} KSH per cycle" if self.savings_enabled else "with full payouts to one member each cycle"
             self.description = (
-                f"This is a Merry-Go-Round group where {member_count} members contribute {self.amount} KSH "
+                f"This is a Merry-Go-Round group where members contribute {self.amount} KSH "
                 f"{self.contribution_period}. Payouts occur {self.payout_cycle}, {savings_text}."
             )
             # Save again to update the description
