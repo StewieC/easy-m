@@ -3,137 +3,141 @@
 {% block title %}{{ group.name }} - easy-m{% endblock %}
 
 {% block content %}
-<div class="container mx-auto py-8">
-    <h1 class="text-3xl font-bold text-charcoal mb-6" style="font-family: 'Poppins', sans-serif; font-weight: bold;">{{ group.name }}</h1>
+<div class="container mx-auto py-6 max-w-4xl">
+    <h1 class="text-4xl font-bold text-charcoal mb-8 text-center" style="font-family: 'Poppins', sans-serif;">{{ group.name }}</h1>
     
-    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 class="text-xl font-semibold text-charcoal mb-4">Group Details</h2>
-        <p><strong>Type:</strong> {{ group.get_group_type_display }}</p>
-        <p><strong>Admin:</strong> {{ group.admin.username }}</p>
-        <p><strong>Phone Number:</strong> {{ group.phone_number }}</p>
-        {% if group.group_type == 'merry_go_round' %}
-            <p><strong>Contribution Amount:</strong> {{ group.amount }} KSH</p>
-            <p><strong>Contribution Period:</strong> {{ group.contribution_period }}</p>
-            <p><strong>Payout Cycle:</strong> {{ group.payout_cycle }}</p>
-            <p><strong>Savings Enabled:</strong> {{ group.savings_enabled|yesno:"Yes,No" }}</p>
-            {% if group.savings_enabled %}
-                <p><strong>Savings Amount:</strong> {{ group.savings_amount }} KSH</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- Group Details Card -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-charcoal mb-4">Group Details</h2>
+            <p class="text-base"><strong>Type:</strong> {{ group.get_group_type_display }}</p>
+            <p class="text-base"><strong>Admin:</strong> {{ group.admin.username }}</p>
+            <p class="text-base"><strong>Phone Number:</strong> {{ group.phone_number }}</p>
+            {% if group.group_type == 'merry_go_round' %}
+                <p class="text-base"><strong>Amount:</strong> {{ group.amount }} KSH</p>
+                <p class="text-base"><strong>Period:</strong> {{ group.contribution_period }}</p>
+                <p class="text-base"><strong>Cycle:</strong> {{ group.payout_cycle }}</p>
+                <p class="text-base"><strong>Savings:</strong> {{ group.savings_enabled|yesno:"Yes,No" }}</p>
+                {% if group.savings_enabled %}
+                    <p class="text-base"><strong>Savings Amount:</strong> {{ group.savings_amount }} KSH</p>
+                {% endif %}
+                <p class="text-base"><strong>Description:</strong> {{ group.description }}</p>
             {% endif %}
-            <p><strong>Description:</strong> {{ group.description }}</p>
-        {% endif %}
+        </div>
+
+        <!-- Make a Contribution Card (Swapped with Members) -->
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+            <h2 class="text-xl font-semibold text-charcoal mb-4">Make a Contribution</h2>
+            <a href="{% url 'make_contribution' group.id %}" class="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 text-lg">Contribute</a>
+        </div>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 class="text-xl font-semibold text-charcoal mb-4">Members</h2>
-        <ul class="list-disc pl-5">
-            {% for member in group.members.all %}
-                <li>{{ member.username }} {% if member == group.admin %}(Admin){% endif %}</li>
-            {% empty %}
-                <li>No members yet.</li>
-            {% endfor %}
-        </ul>
-    </div>
+    <!-- Members Card (Swapped with Make a Contribution) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-charcoal mb-4">Members</h2>
+            <ul class="list-disc pl-5 text-base">
+                {% for member in group.members.all %}
+                    <li>{{ member.username }} {% if member == group.admin %}(Admin){% endif %}</li>
+                {% empty %}
+                    <li>No members yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-    <!-- Contribution Section -->
-    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 class="text-xl font-semibold text-charcoal mb-4">Make a Contribution</h2>
-        <a href="{% url 'make_contribution' group.id %}" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Contribute</a>
+        <!-- Empty div to maintain grid layout -->
+        <div></div>
     </div>
 
     <!-- Contribution History -->
-    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
         <h2 class="text-xl font-semibold text-charcoal mb-4">Contribution History</h2>
-        <p><strong>Total Contributions:</strong> {{ group.total_contributions }} KSH</p>
+        <p class="text-base"><strong>Total:</strong> {{ group.total_contributions }} KSH</p>
         {% if group.contributions.all %}
-            <table class="w-full mt-4">
+            <table class="w-full mt-4 text-base">
                 <thead>
                     <tr>
-                        <th class="text-left">User</th>
-                        <th class="text-left">Amount (KSH)</th>
-                        <th class="text-left">Date</th>
+                        <th class="text-left py-2">User</th>
+                        <th class="text-left py-2">Amount (KSH)</th>
+                        <th class="text-left py-2">Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for contribution in group.contributions.all %}
                         <tr>
-                            <td>{{ contribution.user.username }}</td>
-                            <td>{{ contribution.amount }}</td>
-                            <td>{{ contribution.date }}</td>
+                            <td class="py-2">{{ contribution.user.username }}</td>
+                            <td class="py-2">{{ contribution.amount }}</td>
+                            <td class="py-2">{{ contribution.date }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         {% else %}
-            <p>No contributions yet.</p>
+            <p class="text-base text-gray-600">No contributions yet.</p>
         {% endif %}
     </div>
 
-    <!-- Merry-Go-Round Payout Information -->
     {% if group.group_type == 'merry_go_round' %}
-    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 class="text-xl font-semibold text-charcoal mb-4">Next Payout</h2>
-        {% with next_payout=group.get_next_payout %}
-            {% if next_payout %}
-                <p><strong>Recipient:</strong> {{ next_payout.recipient.username }}</p>
-                <p><strong>Amount:</strong> {{ next_payout.amount }} KSH</p>
-                <p><strong>Date:</strong> {{ next_payout.date }}</p>
-                {% if request.user == group.admin %}
-                    <form method="post">
-                        {% csrf_token %}
-                        <button type="submit" name="make_payout" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 mt-4">Make Payout</button>
-                    </form>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- Next Payout Card -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-charcoal mb-4">Next Payout</h2>
+            {% with next_payout=group.get_next_payout %}
+                {% if next_payout %}
+                    <p class="text-base"><strong>Recipient:</strong> {{ next_payout.recipient.username }}</p>
+                    <p class="text-base"><strong>Amount:</strong> {{ next_payout.amount }} KSH</p>
+                    <p class="text-base"><strong>Date:</strong> {{ next_payout.date }}</p>
+                    {% if request.user == group.admin %}
+                        <form method="post" class="mt-4">
+                            {% csrf_token %}
+                            <button type="submit" name="make_payout" class="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 w-full text-lg">Make Payout</button>
+                        </form>
+                    {% endif %}
+                {% else %}
+                    <p class="text-base text-gray-600">No members available for payout.</p>
                 {% endif %}
-            {% else %}
-                <p>No members available for payout.</p>
-            {% endif %}
-        {% endwith %}
-    </div>
+            {% endwith %}
+        </div>
 
-    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 class="text-xl font-semibold text-charcoal mb-4">Last Payout</h2>
-        {% if last_payout %}
-            <p><strong>Recipient:</strong> {{ last_payout.recipient.username }}</p>
-            <p><strong>Amount:</strong> {{ last_payout.amount }} KSH</p>
-            <p><strong>Date:</strong> {{ last_payout.date }}</p>
-        {% else %}
-            <p>No payouts have been made yet.</p>
-        {% endif %}
+        <!-- Last Payout Card -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-charcoal mb-4">Last Payout</h2>
+            {% if last_payout %}
+                <p class="text-base"><strong>Recipient:</strong> {{ last_payout.recipient.username }}</p>
+                <p class="text-base"><strong>Amount:</strong> {{ last_payout.amount }} KSH</p>
+                <p class="text-base"><strong>Date:</strong> {{ last_payout.date }}</p>
+            {% else %}
+                <p class="text-base text-gray-600">No payouts have been made yet.</p>
+            {% endif %}
+        </div>
     </div>
     {% endif %}
 
     {% if request.user == group.admin %}
-    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
         <h2 class="text-xl font-semibold text-charcoal mb-4">Admin Actions</h2>
-        
-        <!-- Add User -->
         <form method="post" class="mb-4">
             {% csrf_token %}
             <div class="flex items-center space-x-4">
-                <input type="email" name="email" placeholder="User email" class="border rounded px-3 py-2 w-full" required>
-                <button type="submit" name="add_user" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Add User</button>
+                <input type="email" name="email" placeholder="User email" class="border rounded px-3 py-2 w-full text-base" required>
+                <button type="submit" name="add_user" class="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700">Add User</button>
             </div>
         </form>
-
-        <!-- Remove User -->
         <form method="post" class="mb-4">
             {% csrf_token %}
             <div class="flex items-center space-x-4">
                 <label for="user-select" class="sr-only">Select User</label>
-                <select id="user-select" name="user_id" class="border rounded px-3 py-2 w-full">
+                <select id="user-select" name="user_id" class="border rounded px-3 py-2 w-full text-base" title="Select a user to remove">
                     {% for member in group.members.all %}
                         {% if member != group.admin %}
                             <option value="{{ member.id }}">{{ member.username }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
-                <button type="submit" name="remove_user" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Remove User</button>
+                <button type="submit" name="remove_user" class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">Remove User</button>
             </div>
         </form>
-
-        <!-- Join Code -->
-        <div class="flex items-center space-x-4">
-            <p><strong>Join Code:</strong> {{ group.join_code }}</p>
-        </div>
+        <p class="text-base"><strong>Join Code:</strong> {{ group.join_code }}</p>
     </div>
     {% endif %}
 </div>
