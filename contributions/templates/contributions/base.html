@@ -13,11 +13,22 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>{% block title %}easy-m{% endblock %}</title>
 </head>
-<body class="bg-gray-100 font-poppins">
-    {% if user.is_authenticated and not request.path == '/accounts/login/' and not request.path == '/accounts/signup/' %}
-    <div class="fixed inset-y-0 left-0 w-64 bg-teal-600 text-white flex flex-col">
+<body class="bg-gray-100 font-poppins flex flex-col min-h-screen">
+    {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <a href="{% url 'dashboard' %}" class="logo">easy-m</a>
+        <div class="menu-icon" onclick="toggleSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="fixed inset-y-0 left-0 w-64 bg-teal-600 text-white flex flex-col sidebar">
         <div class="p-6 text-2xl font-bold">
-            <a href="#" class="logo">easy-m</a>
+            <a href="{% url 'dashboard' %}" class="logo">easy-m</a>
         </div>
         <nav class="flex-1">
             <ul class="space-y-2 p-4">
@@ -51,7 +62,8 @@
     </div>
     {% endif %}
 
-    <div class="{% if user.is_authenticated and not request.path == '/accounts/login/' and not request.path == '/accounts/signup/' %}ml-64 p-6{% endif %} min-h-screen">
+    <!-- Main Content -->
+    <div class="{% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}ml-64 p-6{% else %}p-6{% endif %} flex-1">
         {% if messages %}
         <div class="messages">
             {% for message in messages %}
@@ -64,8 +76,9 @@
         {% block content %}{% endblock %}
     </div>
 
-    {% if user.is_authenticated and not request.path == '/accounts/login/' and not request.path == '/accounts/signup/' %}
-    <footer class="bg-charcoal text-white p-6">
+    <!-- Footer -->
+    {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}
+    <footer class="bg-charcoal text-white p-6 mt-auto">
         <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
             <div class="mb-4 md:mb-0">
                 <p>© 2025 easy-m. All rights reserved.</p>
@@ -80,6 +93,12 @@
     </footer>
     {% endif %}
 
+    <!-- JavaScript to Toggle Sidebar -->
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+    </script>
     <script src="https://unpkg.com/scrollreveal"></script>
     <script src="{% static 'js/script.js' %}"></script>
 </body>
