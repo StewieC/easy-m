@@ -17,7 +17,7 @@
     {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}
     <!-- Mobile Header -->
     <header class="mobile-header">
-        <a href="{% url 'dashboard' %}" class="logo">easy-m</a>
+        <a href="{% url 'dashboard' %}" class="logo mobile-logo">easy-m</a>
         <div class="menu-icon" onclick="toggleSidebar()">
             <span></span>
             <span></span>
@@ -27,7 +27,7 @@
 
     <!-- Sidebar -->
     <div class="fixed inset-y-0 left-0 w-64 bg-teal-600 text-white flex flex-col sidebar">
-        <div class="p-6 text-2xl font-bold">
+        <div class="p-6 text-2xl font-bold sidebar-logo">
             <a href="{% url 'dashboard' %}" class="logo">easy-m</a>
         </div>
         <nav class="flex-1">
@@ -96,7 +96,21 @@
     <!-- JavaScript to Toggle Sidebar -->
     <script>
         function toggleSidebar() {
-            document.querySelector('.sidebar').classList.toggle('active');
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        // Ensure sidebar is hidden on small screens by default
+        window.addEventListener('resize', () => {
+            const sidebar = document.querySelector('.sidebar');
+            if (window.innerWidth <= 1023 && !sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Run on initial load
+        if (window.innerWidth <= 1023) {
+            document.querySelector('.sidebar').classList.remove('active');
         }
     </script>
     <script src="https://unpkg.com/scrollreveal"></script>

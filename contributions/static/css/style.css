@@ -13,7 +13,7 @@ body {
 
 /* Mobile Header */
 .mobile-header {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -40,6 +40,13 @@ body {
     color: white;
 }
 
+/* Hide sidebar logo on small screens when sidebar is not active */
+@media (max-width: 1023px) {
+    .sidebar:not(.active) .sidebar-logo {
+        display: none;
+    }
+}
+
 /* Kebab Menu Icon (Three Vertical Dots) */
 .menu-icon {
     display: flex;
@@ -61,9 +68,10 @@ body {
 /* Sidebar */
 .sidebar {
     transition: transform 0.3s ease;
+    z-index: 999; /* Below mobile header */
 }
 
-@media (max-width: 1023px) { /* Phones and tablets */
+@media (max-width: 1023px) {
     .sidebar {
         transform: translateX(-100%); /* Hidden by default */
     }
@@ -72,9 +80,9 @@ body {
     }
 }
 
-@media (min-width: 1024px) { /* Desktops */
+@media (min-width: 1024px) {
     .sidebar {
-        transform: translateX(0); /* Always visible */
+        transform: translateX(0); /* Always visible on desktops */
     }
 }
 
