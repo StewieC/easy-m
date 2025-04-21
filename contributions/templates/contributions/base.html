@@ -105,12 +105,16 @@
             const sidebar = document.querySelector('.sidebar');
             if (window.innerWidth <= 1023 && !sidebar.classList.contains('active')) {
                 sidebar.classList.remove('active');
+            } else if (window.innerWidth > 1023) {
+                sidebar.classList.add('active');
             }
         });
 
         // Run on initial load
         if (window.innerWidth <= 1023) {
             document.querySelector('.sidebar').classList.remove('active');
+        } else {
+            document.querySelector('.sidebar').classList.add('active');
         }
     </script>
     <script src="https://unpkg.com/scrollreveal"></script>

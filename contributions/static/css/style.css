@@ -42,8 +42,23 @@ body {
 
 /* Hide sidebar logo on small screens when sidebar is not active */
 @media (max-width: 1023px) {
+    .sidebar:not(.active) {
+        transform: translateX(-100%);
+    }
     .sidebar:not(.active) .sidebar-logo {
-        display: none;
+        visibility: hidden;
+        opacity: 0;
+        height: 0;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+    .sidebar.active .sidebar-logo {
+        visibility: visible;
+        opacity: 1;
+        height: auto;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
     }
 }
 
