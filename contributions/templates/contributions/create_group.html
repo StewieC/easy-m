@@ -1,19 +1,14 @@
 {% extends 'contributions/base.html' %}
-
 {% block title %}Create Group - easy-m{% endblock %}
-
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-teal-600 to-coral animate-gradient">
-    <div class="glass-card p-8 rounded-2xl shadow-lg max-w-sm w-full">
-        <h1 class="text-3xl font-bold text-charcoal mb-6 text-center" style="font-family: 'Poppins', sans-serif;">Create a Group</h1>
+<main class="container mx-auto px-4 py-8">
+    <section class="glassmorphism p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4">Create a New Group</h2>
         <form method="post">
             {% csrf_token %}
-            <div class="mb-4">
-                <label for="group_type" class="block text-charcoal mb-2">Group Type</label>
-                {{ form.group_type }}
-            </div>
-            <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition w-full">Next</button>
+            {{ form.as_p }}
+            <button type="submit" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Next</button>
         </form>
-    </div>
-</div>
+    </section>
+</main>
 {% endblock %}

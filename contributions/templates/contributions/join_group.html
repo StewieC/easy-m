@@ -1,17 +1,17 @@
 {% extends 'contributions/base.html' %}
-
 {% block title %}Join Group - easy-m{% endblock %}
-
 {% block content %}
-<div class="container mx-auto py-8">
-    <h1 class="text-3xl font-bold text-charcoal mb-6" style="font-family: 'Dancing Script', cursive;">Join a Group</h1>
-    <form method="post" class="max-w-sm">
-        {% csrf_token %}
-        <div class="mb-4">
-            <label for="join_code" class="block text-charcoal mb-2">Join Code</label>
-            <input type="text" id="join_code" name="join_code" class="border rounded px-3 py-2 w-full" required>
-        </div>
-        <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition w-full">Join Group</button>
-    </form>
-</div>
+<main class="container mx-auto px-4 py-8">
+    <section class="glassmorphism p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4">Join a Group</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="join_code" class="block mb-2">Join Code</label>
+                <input type="text" id="join_code" name="join_code" class="w-full p-2 rounded-lg" placeholder="Enter group join code" required>
+            </div>
+            <button type="submit" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Join Group</button>
+        </form>
+    </section>
+</main>
 {% endblock %}
