@@ -15,7 +15,7 @@ def send_reset_email(user, token):
     This link will expire in 1 hour. If you did not request a password reset, please ignore this email.
 
     Best regards,
-    HostelNest Team
+    easymoneysniper Team
     """
     send_mail(
         subject,
