@@ -4,7 +4,7 @@ from django.urls import reverse
 
 def send_reset_email(user, token):
     subject = 'Password Reset Request'
-    reset_url = settings.SITE_URL + reverse('password_reset:reset_password', kwargs={'token': str(token)})
+    reset_url = settings.SITE_URL + reverse('reset_password', kwargs={'token': str(token)})
     message = f"""
     Hello {user.username},
 
