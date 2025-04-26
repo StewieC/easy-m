@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'contributions',
     'accounts',
+    'password_reset',  # New app for password reset functionality
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,13 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Default backend
     'accounts.backends.EmailBackend',  # Custom backend for email login
 ]
+
+# Email Configuration (Console Backend for Development)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Default Email Settings
+EMAIL_FROM = 'noreply@hostelnest.com'  # The "from" email address (can be customized)
+
+# Site URL (used for password reset links)
+SITE_URL = 'http://127.0.0.1:8000'  # Update this for production (e.g., 'https://yourdomain.com')
+
