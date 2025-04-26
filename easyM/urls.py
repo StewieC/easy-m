@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('contributions.urls')),
     path('accounts/', include('accounts.urls')),
+    path('password-reset/', include('password_reset.urls')),
 ]
