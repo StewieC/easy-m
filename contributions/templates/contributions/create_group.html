@@ -1,13 +1,13 @@
 {% extends 'contributions/base.html' %}
-{% block title %}Create Group - easy-m{% endblock %}
+{% block title %}Create Contribution Group - easy-m{% endblock %}
 {% block content %}
 <main class="container mx-auto px-4 py-8">
-    <section class="glassmorphism p-6 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-semibold mb-4">Create a New Group</h2>
+    <section class="glassmorphism p-6 rounded-lg shadow-lg mb-8">
+        <h2 class="text-2xl font-semibold mb-4 text-white">Create Contribution Group</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Next</button>
+            <button type="submit" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out w-full">Create Group</button>
         </form>
     </section>
 </main>

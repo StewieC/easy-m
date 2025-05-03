@@ -8,7 +8,7 @@ window.addEventListener('resize', () => {
     const sidebar = document.querySelector('.sidebar');
     if (window.innerWidth <= 1023 && !sidebar.classList.contains('active')) {
         sidebar.classList.remove('active');
-    } else if (window.innerWidth > 1023) {
+    } else if (window.innerWidth > 1024) {
         sidebar.classList.add('active');
     }
 });
@@ -19,3 +19,11 @@ if (window.innerWidth <= 1023) {
 } else {
     document.querySelector('.sidebar').classList.add('active');
 }
+
+// Fade-in animation for cards on load
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.glassmorphism');
+    cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.2}s`;
+    });
+});

@@ -1,18 +1,18 @@
-{% extends 'base.html' %}
+{% extends 'contributions/base.html' %}
 {% block title %}{{ group.name }} - easy-m{% endblock %}
 {% block content %}
 <main class="container mx-auto px-4 py-8">
     <section class="glassmorphism p-6 rounded-lg shadow-lg mb-8">
-        <h2 class="text-2xl font-semibold mb-4">{{ group.name }}</h2>
-        <p class="text-md mb-2">Type: {{ group.group_type }}</p>
-        <p class="text-md mb-2">Admin: {{ group.admin.username }}</p>
-        <p class="text-md mb-4">Total Contributions: KSH {{ group.total_contributions }}</p>
+        <h2 class="text-2xl font-semibold mb-4 text-white">{{ group.name }}</h2>
+        <p class="text-md mb-2 text-gray-300">Type: {{ group.group_type }}</p>
+        <p class="text-md mb-2 text-gray-300">Admin: {{ group.admin.username }}</p>
+        <p class="text-md mb-4 text-gray-300">Total Contributions: KSH {{ group.total_contributions }}</p>
 
         {% if group.group_type == 'merry_go_round' %}
         <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-2">Last Payout</h3>
+            <h3 class="text-lg font-semibold mb-2 text-white">Last Payout</h3>
             {% if last_payout %}
-            <p class="text-md">Payout of {{ last_payout.amount }} KSH to {{ last_payout.recipient.username }} on {{ last_payout.date }}</p>
+            <p class="text-md text-gray-300">Payout of {{ last_payout.amount }} KSH to {{ last_payout.recipient.username }} on {{ last_payout.date }}</p>
             {% else %}
             <p class="text-gray-400">No payouts yet.</p>
             {% endif %}
@@ -20,17 +20,17 @@
         {% if user == group.admin %}
         <form method="post">
             {% csrf_token %}
-            <button type="submit" name="make_payout" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Make Payout</button>
+            <button type="submit" name="make_payout" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Make Payout</button>
         </form>
         {% endif %}
         {% endif %}
 
         <div class="mt-6">
-            <h3 class="text-lg font-semibold mb-2">Members</h3>
+            <h3 class="text-lg font-semibold mb-2 text-white">Members</h3>
             <ul class="space-y-2">
                 {% for member in group.members.all %}
-                <li class="bg-gray-800 rounded-lg p-2 flex justify-between items-center">
-                    <span>{{ member.username }}</span>
+                <li class="glassmorphism p-2 flex justify-between items-center">
+                    <span class="text-white">{{ member.username }}</span>
                     {% if user == group.admin and member != group.admin %}
                     <form method="post" class="inline">
                         {% csrf_token %}
@@ -45,17 +45,17 @@
 
         {% if user == group.admin %}
         <div class="mt-6">
-            <h3 class="text-lg font-semibold mb-2">Add Member</h3>
+            <h3 class="text-lg font-semibold mb-2 text-white">Add Member</h3>
             <form method="post" class="flex space-x-2">
                 {% csrf_token %}
                 <input type="email" name="email" placeholder="Enter email" class="flex-1 p-2 rounded-lg" required>
-                <button type="submit" name="add_user" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Add</button>
+                <button type="submit" name="add_user" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Add</button>
             </form>
         </div>
         {% endif %}
 
         <div class="mt-6">
-            <a href="{% url 'make_contribution' group_id=group.id %}" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Contribute</a>
+            <a href="{% url 'make_contribution' group_id=group.id %}" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Contribute</a>
         </div>
     </section>
 </main>

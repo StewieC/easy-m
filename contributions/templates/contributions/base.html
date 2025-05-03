@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>{% block title %}easy-m{% endblock %}</title>
 </head>
-<body class="bg-gray-900 font-inter flex flex-col min-h-screen text-light">
+<body class="bg-F9FAFB font-inter flex flex-col min-h-screen">
     {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}
     <!-- Mobile Header -->
     <header class="mobile-header">
@@ -26,34 +26,34 @@
     </header>
 
     <!-- Sidebar -->
-    <div class="fixed inset-y-0 left-0 w-64 text-white flex flex-col sidebar glassmorphism">
+    <div class="fixed inset-y-0 left-0 w-64 flex flex-col sidebar glassmorphism">
         <div class="p-6 text-2xl font-bold sidebar-logo">
             <a href="{% url 'dashboard' %}" class="logo">easy-m</a>
         </div>
         <nav class="flex-1">
             <ul class="space-y-2 p-4">
                 <li>
-                    <a href="{% url 'dashboard' %}" class="flex items-center p-2 hover:text-primary-color transition duration-300 rounded">
+                    <a href="{% url 'dashboard' %}" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
                         <i class="ri-dashboard-line mr-2"></i> Dashboard
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'create_group' %}" class="flex items-center p-2 hover:text-primary-color transition duration-300 rounded">
+                    <a href="{% url 'create_group' %}" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
                         <i class="ri-group-line mr-2"></i> Create Group
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'join_group' %}" class="flex items-center p-2 hover:text-primary-color transition duration-300 rounded">
+                    <a href="{% url 'join_group' %}" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
                         <i class="ri-user-add-line mr-2"></i> Join Group
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center p-2 hover:text-primary-color transition duration-300 rounded">
+                    <a href="#" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
                         <i class="ri-question-line mr-2"></i> Help
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'logout' %}" class="flex items-center p-2 hover:text-primary-color transition duration-300 rounded">
+                    <a href="{% url 'logout' %}" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
                         <i class="ri-logout-box-line mr-2"></i> Logout
                     </a>
                 </li>
@@ -67,7 +67,7 @@
         {% if messages %}
         <div class="messages">
             {% for message in messages %}
-            <p {% if message.tags %} class="{{ message.tags }}" {% endif %}}>
+            <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
                 {{ message }}
             </p>
             {% endfor %}
@@ -84,10 +84,10 @@
                 <p>© 2025 easy-m. All rights reserved.</p>
             </div>
             <div class="flex space-x-4">
-                <a href="#" class="hover:text-primary-color transition duration-300"><i class="ri-instagram-line text-xl"></i></a>
-                <a href="#" class="hover:text-primary-color transition duration-300"><i class="ri-twitter-x-line text-xl"></i></a>
-                <a href="#" class="hover:text-primary-color transition duration-300"><i class="ri-linkedin-fill text-xl"></i></a>
-                <a href="#" class="hover:text-primary-color transition duration-300"><i class="ri-google-fill text-xl"></i></a>
+                <a href="#" class="hover:text-FFD700 transition duration-300"><i class="ri-instagram-line text-xl"></i></a>
+                <a href="#" class="hover:text-FFD700 transition duration-300"><i class="ri-twitter-x-line text-xl"></i></a>
+                <a href="#" class="hover:text-FFD700 transition duration-300"><i class="ri-linkedin-fill text-xl"></i></a>
+                <a href="#" class="hover:text-FFD700 transition duration-300"><i class="ri-google-fill text-xl"></i></a>
             </div>
         </div>
     </footer>

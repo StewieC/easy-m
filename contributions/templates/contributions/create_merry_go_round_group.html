@@ -1,43 +1,41 @@
 {% extends 'contributions/base.html' %}
-
 {% block title %}Create Merry-Go-Round Group - easy-m{% endblock %}
-
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-teal-600 to-coral animate-gradient">
-    <div class="glass-card p-8 rounded-2xl shadow-lg max-w-sm w-full">
-        <h1 class="text-3xl font-bold text-charcoal mb-6 text-center" style="font-family: 'Dancing Script', cursive;">Merry-Go-Round Group</h1>
+<main class="container mx-auto px-4 py-8">
+    <section class="glassmorphism p-6 rounded-lg shadow-lg mb-8">
+        <h2 class="text-2xl font-semibold mb-4 text-white">Create Merry-Go-Round Group</h2>
         <form method="post">
             {% csrf_token %}
-            <div class="mb-4 relative">
-                <i class="ri-group-line absolute text-gray-500 left-3 top-1/2 transform -translate-y-1/2"></i>
+            <div class="mb-4">
+                <label for="id_name" class="block text-white mb-2">Name:</label>
                 {{ form.name }}
             </div>
-            <div class="mb-4 relative">
-                <i class="ri-money-dollar-circle-line absolute text-gray-500 left-3 top-1/2 transform -translate-y-1/2"></i>
+            <div class="mb-4">
+                <label for="id_amount" class="block text-white mb-2">Amount:</label>
                 {{ form.amount }}
             </div>
-            <div class="mb-4 relative">
-                <i class="ri-phone-line absolute text-gray-500 left-3 top-1/2 transform -translate-y-1/2"></i>
+            <div class="mb-4">
+                <label for="id_phone_number" class="block text-white mb-2">Phone Number:</label>
                 {{ form.phone_number }}
             </div>
             <div class="mb-4">
-                <label for="contribution_period" class="block text-charcoal mb-2">Contribution Period</label>
+                <label for="id_contribution_period" class="block text-white mb-2">Contribution Period:</label>
                 {{ form.contribution_period }}
             </div>
             <div class="mb-4">
-                <label for="payout_cycle" class="block text-charcoal mb-2">Payout Cycle</label>
+                <label for="id_payout_cycle" class="block text-white mb-2">Payout Cycle:</label>
                 {{ form.payout_cycle }}
             </div>
             <div class="mb-4 flex items-center">
-                <label for="savings_enabled" class="text-charcoal mr-2">Enable Savings?</label>
+                <label for="id_savings_enabled" class="text-white mr-2">Enable Savings?</label>
                 {{ form.savings_enabled }}
             </div>
-            <div class="mb-4 relative">
-                <i class="ri-wallet-line absolute text-gray-500 left-3 top-1/2 transform -translate-y-1/2"></i>
+            <div class="mb-4">
+                <label for="id_savings_amount" class="block text-white mb-2">Savings Amount:</label>
                 {{ form.savings_amount }}
             </div>
-            <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition w-full">Create Group</button>
+            <button type="submit" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out w-full">Create Group</button>
         </form>
-    </div>
-</div>
+    </section>
+</main>
 {% endblock %}

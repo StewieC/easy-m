@@ -2,15 +2,15 @@
 {% block title %}Join Group - easy-m{% endblock %}
 {% block content %}
 <main class="container mx-auto px-4 py-8">
-    <section class="glassmorphism p-6 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-semibold mb-4">Join a Group</h2>
+    <section class="glassmorphism p-6 rounded-lg shadow-lg mb-8">
+        <h2 class="text-2xl font-semibold mb-4 text-white">Join a Group</h2>
         <form method="post">
             {% csrf_token %}
             <div class="mb-4">
-                <label for="join_code" class="block mb-2">Join Code</label>
+                <label for="join_code" class="block text-white mb-2">Join Code</label>
                 <input type="text" id="join_code" name="join_code" class="w-full p-2 rounded-lg" placeholder="Enter group join code" required>
             </div>
-            <button type="submit" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Join Group</button>
+            <button type="submit" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out w-full">Join Group</button>
         </form>
     </section>
 </main>
