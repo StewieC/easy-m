@@ -23,3 +23,11 @@ class SignUpForm(UserCreationForm):
 class LoginForm(forms.Form):
     email = forms.EmailField(required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['display_name', 'phone_number', 'bio']
+        widgets = {
+            'bio': forms.Textarea(attrs={'rows': 4}),
+        }
