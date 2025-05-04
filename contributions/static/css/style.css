@@ -8,8 +8,8 @@
 }
 
 body {
-    background-color: #F9FAFB; /* Light Gray background */
-    color: #1F2937; /* Dark Gray text */
+    background-color: #1E3A8A; /* Deep Blue background for better contrast */
+    color: #FFFFFF; /* White text */
 }
 
 /* Mobile Header */
@@ -118,8 +118,8 @@ main {
 
 /* Glassmorphism Effect */
 .glassmorphism {
-    background-color: rgba(255, 255, 255, 0.1);
-    -webkit-backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.3); /* Darker background for better contrast */
+    -webkit-backdrop-filter: blur(10px); /* For Safari support */
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 16px;
@@ -166,7 +166,7 @@ button:hover {
     --accent-color: #FFD700; /* Gold */
     --text-light: #FFFFFF; /* White */
     --dark-bg: #1E3A8A; /* Deep Blue */
-    --card-bg: rgba(255, 255, 255, 0.1);
+    --card-bg: rgba(0, 0, 0, 0.3); /* Darker for cards */
 }
 
 /* Messages Styling */
@@ -243,21 +243,4 @@ footer {
     background-color: #1E3A8A;
     width: 100%;
     color: #FFFFFF;
-}
-
-/* Google Button */
-.google-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #FFFFFF;
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    transition: background-color 0.3s ease;
-}
-
-.google-button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
 }
