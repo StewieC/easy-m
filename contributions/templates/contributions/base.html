@@ -10,20 +10,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>{% block title %}easy-m{% endblock %}</title>
 </head>
-<body class="bg-F9FAFB font-inter flex flex-col min-h-screen">
+<body class="bg-1E3A8A font-inter flex flex-col min-h-screen">
     {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}
     <!-- Mobile Header -->
-    <header class="mobile-header">
+    <!-- <header class="mobile-header">
         <a href="{% url 'dashboard' %}" class="logo mobile-logo">easy-m</a>
         <div class="menu-icon" onclick="toggleSidebar()">
             <span></span>
             <span></span>
             <span></span>
         </div>
-    </header>
+    </header> -->
 
     <!-- Sidebar -->
     <div class="fixed inset-y-0 left-0 w-64 flex flex-col sidebar glassmorphism">
@@ -39,12 +40,17 @@
                 </li>
                 <li>
                     <a href="{% url 'create_group' %}" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
-                        <i class="ri-group-line mr-2">Create Group</i> 
+                        <i class="ri-group-line mr-2"></i> Create Group
                     </a>
                 </li>
                 <li>
                     <a href="{% url 'join_group' %}" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
                         <i class="ri-user-add-line mr-2"></i> Join Group
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'profile' %}" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
+                        <i class="ri-user-line mr-2"></i> Profile
                     </a>
                 </li>
                 <li>
@@ -78,16 +84,16 @@
 
     <!-- Footer -->
     {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}
-    <footer class="p-6 mt-auto">
-        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+    <footer class="p-6 mt-auto w-full text-center">
+        <div class="container mx-auto flex flex-col md:flex-row justify-center items-center"></div>
             <div class="mb-4 md:mb-0">
                 <p>© 2025 easy-m. All rights reserved.</p>
             </div>
-            <div class="flex space-x-4">
-                <a href="#" class="hover:text-FFD700 transition duration-300"><i class="ri-instagram-line text-xl"></i></a>
-                <a href="#" class="hover:text-FFD700 transition duration-300"><i class="ri-twitter-x-line text-xl"></i></a>
-                <a href="#" class="hover:text-FFD700 transition duration-300"><i class="ri-linkedin-fill text-xl"></i></a>
-                <a href="#" class="hover:text-FFD700 transition duration-300"><i class="ri-google-fill text-xl"></i></a>
+            <div class="flex space-x-4 mt-4 md:mt-0"></div>
+                <a href="#" class="hover:text-FFD700 transition duration-300" title="Instagram"><i class="ri-instagram-line text-xl"></i></a>
+                <a href="#" class="hover:text-FFD700 transition duration-300" title="Twitter"><i class="ri-twitter-x-line text-xl"></i></a>
+                <a href="#" class="hover:text-FFD700 transition duration-300" title="LinkedIn"><i class="ri-linkedin-fill text-xl"></i></a>
+                <a href="#" class="hover:text-FFD700 transition duration-300" title="Google"><i class="ri-google-fill text-xl"></i></a>
             </div>
         </div>
     </footer>

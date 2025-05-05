@@ -29,13 +29,13 @@
             <h3 class="text-lg font-semibold mb-2 text-white">Members</h3>
             <ul class="space-y-2">
                 {% for member in group.members.all %}
-                <li class="glassmorphism p-2 flex justify-between items-center">
-                    <span class="text-white">{{ member.username }}</span>
+                <li class="text-white text-sm py-1 border-b border-gray-700"></li>
+                    {{ member.username }}
                     {% if user == group.admin and member != group.admin %}
-                    <form method="post" class="inline">
+                    <form method="post" class="inline ml-2"></form>
                         {% csrf_token %}
                         <input type="hidden" name="user_id" value="{{ member.id }}">
-                        <button type="submit" name="remove_user" class="text-red-400 hover:text-red-300 transition duration-300">Remove</button>
+                        <button type="submit" name="remove_user" class="text-red-400 hover:text-red-300 text-xs transition duration-300">Remove</button>
                     </form>
                     {% endif %}
                 </li>
