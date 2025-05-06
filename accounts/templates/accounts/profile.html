@@ -2,9 +2,8 @@
 {% block title %}Profile - easy-m{% endblock %}
 {% block content %}
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-1E3A8A to-FFD700">
-    <div class="glass-card p-8 rounded-2xl shadow-lg max-w-md w-full">
+    <div class="glassmorphism p-8 rounded-2xl shadow-lg max-w-md w-full">
         <h2 class="text-2xl font-semibold mb-4 text-white text-center">Your Profile</h2>
-        <p class="mb-4 text-gray-300 text-center">Update your details below.</p>
         {% if messages %}
         <div class="messages">
             {% for message in messages %}
@@ -12,6 +11,10 @@
             {% endfor %}
         </div>
         {% endif %}
+
+        {% if request.GET.edit %}
+        <!-- Edit Profile Form -->
+        <p class="mb-4 text-gray-300 text-center">Update your details below.</p>
         <form method="post">
             {% csrf_token %}
             <div class="mb-4 relative">
@@ -26,15 +29,30 @@
                 <label for="bio" class="block text-white mb-2">Bio:</label>
                 <textarea id="bio" name="bio" class="w-full p-3 bg-gray-800 bg-opacity-50 text-white border border-gray-600 rounded-lg focus:border-FFD700 focus:outline-none" rows="4" placeholder="Tell us about yourself">{{ user.profile.bio|default_if_none:'' }}</textarea>
             </div>
-            <button type="submit" class="button-gradient hover:bg-FFC107 text-white font-bold py-3 px-6 rounded-full transition w-full">Update Profile</button>
+            <div class="flex space-x-4">
+                <button type="submit" class="button-gradient hover:bg-FFC107 text-white font-bold py-3 px-6 rounded-full transition w-full">Save Changes</button>
+                <a href="{% url 'profile' %}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-full transition w-full text-center">Cancel</a>
+            </div>
         </form>
-        <div class="mt-6 flex space-x-4">
+        {% else %}
+        <!-- View Profile Details -->
+        <div class="mb-6">
+            <p class="text-gray-300 mb-2"><span class="font-semibold text-white">Display Name:</span> {{ user.profile.display_name }}</p>
+            <p class="text-gray-300 mb-2"><span class="font-semibold text-white">Phone Number:</span> {{ user.profile.phone_number|default:"Not set" }}</p>
+            <p class="text-gray-300 mb-2"><span class="font-semibold text-white">Bio:</span> {{ user.profile.bio|default:"Not set" }}</p>
+            <p class="text-gray-300 mb-2"><span class="font-semibold text-white">Email:</span> {{ user.email }}</p>
+        </div>
+        <div class="flex space-x-4">
+            <a href="{% url 'profile' %}?edit=true" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition w-full text-center">Update Profile</a>
             <a href="{% url 'logout' %}" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition w-full text-center">Logout</a>
+        </div>
+        <div class="mt-4">
             <form method="post" action="{% url 'delete_account' %}" class="w-full">
                 {% csrf_token %}
                 <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition w-full" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">Delete Account</button>
             </form>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
