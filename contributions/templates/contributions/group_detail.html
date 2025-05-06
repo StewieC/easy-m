@@ -17,6 +17,16 @@
             <p class="text-gray-400">No payouts yet.</p>
             {% endif %}
         </div>
+
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-2 text-white">Next Payout</h3>
+            {% if next_payout %}
+            <p class="text-md text-gray-300">Next payout of {{ next_payout.amount }} KSH to {{ next_payout.recipient.username }}.</p>
+            {% else %}
+            <p class="text-gray-400">No upcoming payouts scheduled.</p>
+            {% endif %}
+        </div>
+
         {% if user == group.admin %}
         <form method="post">
             {% csrf_token %}
@@ -26,16 +36,60 @@
         {% endif %}
 
         <div class="mt-6">
+            <h3 class="text-lg font-semibold mb-2 text-white">Contribution History</h3>
+            {% if contributions %}
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-b">
+                        <th class="py-3 px-4 text-white">Member</th>
+                        <th class="py-3 px-4 text-white">Amount</th>
+                        <th class="py-3 px-4 text-white">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contribution in contributions %}
+                    <tr class="border-b">
+                        <td class="py-3 px-4 text-gray-300">{{ contribution.user.username }}</td>
+                        <td class="py-3 px-4 text-gray-300">{{ contribution.amount }} KSH</td>
+                        <td class="py-3 px-4 text-gray-300">{{ contribution.date|date:"D, d M Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-gray-400">No contributions have been made yet.</p>
+            {% endif %}
+        </div>
+
+        <div class="mt-6">
+            <h3 class="text-lg font-semibold mb-2 text-white">Make a Contribution</h3>
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                <div class="flex space-x-2">
+                    {{ form.amount }}
+                    <button type="submit" name="contribute" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Contribute</button>
+                </div>
+                {% if form.errors %}
+                <div class="text-red-400">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </form>
+        </div>
+
+        <div class="mt-6">
             <h3 class="text-lg font-semibold mb-2 text-white">Members</h3>
             <ul class="space-y-2">
                 {% for member in group.members.all %}
-                <li class="text-white text-sm py-1 border-b border-gray-700"></li>
-                    {{ member.username }}
+                <li class="glassmorphism p-2 flex justify-between items-center">
+                    <span class="text-white">{{ member.username }}</span>
                     {% if user == group.admin and member != group.admin %}
-                    <form method="post" class="inline ml-2"></form>
+                    <form method="post" class="inline">
                         {% csrf_token %}
                         <input type="hidden" name="user_id" value="{{ member.id }}">
-                        <button type="submit" name="remove_user" class="text-red-400 hover:text-red-300 text-xs transition duration-300">Remove</button>
+                        <button type="submit" name="remove_user" class="text-red-400 hover:text-red-300 transition duration-300">Remove</button>
                     </form>
                     {% endif %}
                 </li>
@@ -53,10 +107,6 @@
             </form>
         </div>
         {% endif %}
-
-        <div class="mt-6">
-            <a href="{% url 'make_contribution' group_id=group.id %}" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">Contribute</a>
-        </div>
     </section>
 </main>
 {% endblock %}

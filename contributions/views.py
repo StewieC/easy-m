@@ -68,6 +68,14 @@ def group_detail(request, group_id):
     
     # Get the last payout for Merry-Go-Round groups
     last_payout = group.payouts.order_by('-date').first() if group.group_type == 'merry_go_round' else None
+    
+    # Get contribution history for the group
+    contributions = Contribution.objects.filter(group=group).order_by('-date')
+    
+    # Get next payout for Merry-Go-Round groups
+    next_payout = None
+    if group.group_type == 'merry_go_round':
+        next_payout = group.get_next_payout()
 
     if request.method == 'POST':
         if 'add_user' in request.POST:
@@ -93,47 +101,43 @@ def group_detail(request, group_id):
         
         elif 'make_payout' in request.POST and group.group_type == 'merry_go_round':
             if request.user == group.admin:
-                next_payout = group.get_next_payout()
-                if next_payout:
+                next_payout_data = group.get_next_payout()
+                if next_payout_data:
                     Payout.objects.create(
                         group=group,
-                        recipient=next_payout['recipient'],
-                        amount=next_payout['amount']
+                        recipient=next_payout_data['recipient'],
+                        amount=next_payout_data['amount']
                     )
                     group.last_payout_date = datetime.now()
                     group.save()
-                    messages.success(request, f"Payout of {next_payout['amount']} KSH made to {next_payout['recipient'].username}.")
+                    messages.success(request, f"Payout of {next_payout_data['amount']} KSH made to {next_payout_data['recipient'].username}.")
                 else:
                     messages.error(request, "No members available for payout.")
             else:
                 messages.error(request, "Only the admin can make payouts.")
         
-        return redirect('group_detail', group_id=group.id)
+        elif 'contribute' in request.POST:
+            form = ContributionForm(request.POST, group=group)
+            if form.is_valid():
+                contribution = form.save(commit=False)
+                contribution.group = group
+                contribution.user = request.user
+                contribution.save()
+                messages.success(request, f"Contributed {contribution.amount} KSH to {group.name}.")
+            else:
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"{field}: {error}")
+            return redirect('group_detail', group_id=group.id)
 
+    form = ContributionForm(group=group)
     return render(request, 'contributions/group_detail.html', {
         'group': group,
-        'last_payout': last_payout,  # Pass last_payout to the template
+        'last_payout': last_payout,
+        'contributions': contributions,
+        'next_payout': next_payout,
+        'form': form,
     })
-
-@login_required
-def make_contribution(request, group_id):
-    group = get_object_or_404(Group, id=group_id)
-    if request.user not in group.members.all():
-        messages.error(request, "You are not a member of this group.")
-        return redirect('dashboard')
-
-    if request.method == 'POST':
-        form = ContributionForm(request.POST, group=group)
-        if form.is_valid():
-            contribution = form.save(commit=False)
-            contribution.group = group
-            contribution.user = request.user
-            contribution.save()
-            messages.success(request, f"Contributed {contribution.amount} KSH to {group.name}.")
-            return redirect('group_detail', group_id=group.id)
-    else:
-        form = ContributionForm(group=group)
-    return render(request, 'contributions/make_contribution.html', {'form': form, 'group': group})
 
 @login_required
 def join_group(request):
@@ -147,6 +151,3 @@ def join_group(request):
             messages.warning(request, "You are already a member of this group.")
         return redirect('group_detail', group_id=group.id)
     return render(request, 'contributions/join_group.html')
-
-# def help_page(request):
-#     return render(request, 'contributions/help.html')
