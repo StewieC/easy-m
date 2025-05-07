@@ -21,17 +21,10 @@ body {
     width: 100%;
     background-color: #1E3A8A; /* Deep Blue */
     padding: 1rem;
-    display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-@media (max-width: 1023px) {
-    .mobile-header {
-        display: flex;
-    }
 }
 
 /* Logo */
@@ -43,7 +36,7 @@ body {
 
 /* Kebab Menu Icon (Three Vertical Dots) */
 .menu-icon {
-    display: flex;
+    display: none; /* Hidden by default on desktop */
     flex-direction: column;
     justify-content: space-between;
     width: 24px;
@@ -59,61 +52,38 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Sidebar */
+/* Sidebar (Desktop) */
 .sidebar {
-    transition: transform 0.3s ease;
-    z-index: 999;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 16rem; /* Matches w-64 */
+    flex-direction: column;
     background-color: #1E3A8A;
     color: #FFFFFF;
+    z-index: 999;
 }
 
-@media (max-width: 1023px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
-    .sidebar.active {
-        transform: translateX(0);
-    }
-}
-
-@media (min-width: 1024px) {
-    .sidebar {
-        transform: translateX(0);
-    }
-}
-
-/* Hide sidebar logo on small screens when sidebar is not active */
-@media (max-width: 1023px) {
-    .sidebar:not(.active) {
-        transform: translateX(-100%);
-    }
-    .sidebar:not(.active) .sidebar-logo {
-        visibility: hidden;
-        opacity: 0;
-        height: 0;
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
-    }
-    .sidebar.active .sidebar-logo {
-        visibility: visible;
-        opacity: 1;
-        height: auto;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-    }
+/* Dropdown Menu (Mobile) */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 1rem;
+    top: 4rem; /* Below the mobile header */
+    width: 12rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
 /* Main Content */
 main {
     transition: margin-left 0.3s ease;
-}
-
-@media (max-width: 1023px) {
-    main {
-        margin-left: 0 !important;
-        padding-top: 4rem;
-    }
 }
 
 /* Glassmorphism Effect */
@@ -243,4 +213,94 @@ footer {
     background-color: #1E3A8A;
     width: 100%;
     color: #FFFFFF;
+}
+
+/* Media Queries for Responsive Design */
+
+/* Small Screens (max-width: 990px) */
+@media (max-width: 990px) {
+    /* Mobile Header */
+    .mobile-header {
+        display: flex;
+    }
+
+    /* Menu Icon */
+    .menu-icon {
+        display: flex;
+    }
+
+    /* Show Dropdown Menu */
+    .dropdown-menu:not(.hidden) {
+        display: block;
+    }
+
+    /* Hide Desktop Sidebar */
+    .sidebar {
+        display: none;
+    }
+
+    /* Main Content Adjustment */
+    main {
+        margin-left: 0 !important; /* Remove sidebar offset */
+        padding-top: 4rem; /* Space for mobile header */
+        text-align: center; /* Center content */
+    }
+
+    /* Center Dashboard Buttons */
+    .flex.space-x-4.mb-6 {
+        justify-content: center;
+        gap: 1rem; /* Reasonable spacing */
+        flex-wrap: wrap; /* Ensure buttons wrap if needed */
+    }
+
+    .button-gradient {
+        padding: 0.5rem 1rem; /* Smaller padding for mobile */
+        font-size: 0.9rem; /* Smaller font size */
+        width: 45%; /* Ensure buttons are reasonably sized */
+        text-align: center;
+    }
+
+    /* Center and Resize Group Cards */
+    .glassmorphism {
+        width: 90%;
+        max-width: 300px; /* Reasonable width for mobile */
+        margin: 1rem auto;
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr !important; /* Single column */
+        justify-items: center; /* Center cards */
+        gap: 1rem; /* Reasonable spacing */
+    }
+
+    /* Profile Icon Adjustment */
+    .absolute.top-4.right-4 {
+        top: 5rem; /* Adjust for mobile header */
+        right: 1rem;
+    }
+}
+
+/* Desktop Screens (min-width: 991px) */
+@media (min-width: 991px) {
+    .mobile-header {
+        display: none !important;
+    }
+
+    .menu-icon {
+        display: none !important;
+    }
+
+    .dropdown-menu {
+        display: none !important;
+    }
+
+    .sidebar {
+        display: flex !important;
+    }
+
+    main {
+        margin-left: 16rem; /* Matches w-64 */
+    }
 }

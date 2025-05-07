@@ -17,16 +17,52 @@
 <body class="bg-1E3A8A font-inter flex flex-col min-h-screen">
     {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}
     <!-- Mobile Header -->
-    <!-- <header class="mobile-header">
+    <header class="mobile-header">
         <a href="{% url 'dashboard' %}" class="logo mobile-logo">easy-m</a>
-        <div class="menu-icon" onclick="toggleSidebar()">
+        <div class="menu-icon" onclick="toggleDropdown()">
             <span></span>
             <span></span>
             <span></span>
         </div>
-    </header> -->
+    </header>
 
-    <!-- Sidebar -->
+    <!-- Dropdown Menu for Mobile -->
+    <div class="dropdown-menu hidden absolute right-4 top-16 w-48 z-50 glassmorphism">
+        <ul class="space-y-2 p-4">
+            <li>
+                <a href="{% url 'dashboard' %}" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
+                    <i class="ri-dashboard-line mr-2"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'create_group' %}" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
+                    <i class="ri-group-line mr-2"></i> Create Group
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'join_group' %}" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
+                    <i class="ri-user-add-line mr-2"></i> Join Group
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'profile' %}" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
+                    <i class="ri-user-line mr-2"></i> Profile
+                </a>
+            </li>
+            <li>
+                <a href="#" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
+                    <i class="ri-question-line mr-2"></i> Help
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" class="flex items-center p-2 hover:text-FFD700 transition duration-300 rounded">
+                    <i class="ri-logout-box-line mr-2"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Desktop Sidebar -->
     <div class="fixed inset-y-0 left-0 w-64 flex flex-col sidebar glassmorphism">
         <div class="p-6 text-2xl font-bold sidebar-logo">
             <a href="{% url 'dashboard' %}" class="logo">easy-m</a>
@@ -85,11 +121,11 @@
     <!-- Footer -->
     {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}
     <footer class="p-6 mt-auto w-full text-center">
-        <div class="container mx-auto flex flex-col md:flex-row justify-center items-center"></div>
+        <div class="container mx-auto flex flex-col md:flex-row justify-center items-center">
             <div class="mb-4 md:mb-0">
                 <p>© 2025 easy-m. All rights reserved.</p>
             </div>
-            <div class="flex space-x-4 mt-4 md:mt-0"></div>
+            <div class="flex space-x-4 mt-4 md:mt-0">
                 <a href="#" class="hover:text-FFD700 transition duration-300" title="Instagram"><i class="ri-instagram-line text-xl"></i></a>
                 <a href="#" class="hover:text-FFD700 transition duration-300" title="Twitter"><i class="ri-twitter-x-line text-xl"></i></a>
                 <a href="#" class="hover:text-FFD700 transition duration-300" title="LinkedIn"><i class="ri-linkedin-fill text-xl"></i></a>
@@ -101,5 +137,11 @@
 
     <script src="https://unpkg.com/scrollreveal"></script>
     <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.querySelector('.dropdown-menu');
+            dropdown.classList.toggle('hidden');
+        }
+    </script>
 </body>
 </html>
