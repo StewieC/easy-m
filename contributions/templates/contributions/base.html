@@ -142,6 +142,10 @@
             const dropdown = document.querySelector('.dropdown-menu');
             dropdown.classList.toggle('hidden');
         }
+        // Debug: Force mobile view for testing
+        if (window.innerWidth <= 990) {
+            document.body.classList.add('mobile-debug');
+        }
     </script>
 </body>
 </html>
