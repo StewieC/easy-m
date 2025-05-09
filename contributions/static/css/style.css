@@ -51,6 +51,7 @@ body.mobile-debug .mobile-header {
     justify-content: space-between;
     width: 24px;
     height: 24px;
+} /* Added missing closing brace */
 body.mobile-debug .menu-icon {
     display: flex !important;
 }
@@ -87,7 +88,7 @@ body.mobile-debug .sidebar {
         display: none !important;
     }
 }
-body.mobile-debug .sidebar,
+body.mobile-debug .sidebar:
 @media (max-width: 990px) {
     .sidebar {
         display: none !important;
