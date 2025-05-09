@@ -107,3 +107,15 @@ class Payout(models.Model):
 
     def __str__(self):
         return f"Payout of {self.amount} to {self.recipient.username} on {self.date}"
+    
+# create a notifications class
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)  # For admin-specific notifications
+
+    def __str__(self):
+        return f"{self.user.username} - {self.message[:20]}"

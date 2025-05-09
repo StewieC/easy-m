@@ -1,16 +1,67 @@
-# contributions/views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Group, Contribution, Payout
+from .models import Group, Contribution, Payout, Notification
 from .forms import GroupTypeForm, ContributionGroupForm, MerryGoRoundGroupForm, ContributionForm
 from django.contrib.auth.models import User
-from datetime import datetime
+from django.utils import timezone
+from datetime import datetime, timedelta
 
 @login_required
 def dashboard(request):
     groups = request.user.group_memberships.all()
-    return render(request, 'contributions/dashboard.html', {'groups': groups})
+    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')[:5]  # Last 5 notifications
+
+    # Generate notifications for merry-go-round groups
+    for group in groups:
+        if group.group_type == 'merry_go_round' and group.amount and group.contribution_period and group.payout_cycle:
+            last_payout = group.last_payout_date or timezone.now()
+            cycle_days = {
+                'daily': 1,
+                'weekly': 7,
+                'monthly': 30,
+            }
+            days = cycle_days.get(group.payout_cycle.lower(), 7)
+            next_payout_date = last_payout + timedelta(days=days)
+            contribution_due_date = next_payout_date - timedelta(days=1)  # 1 day before payout
+
+            if timezone.now().date() >= contribution_due_date.date():
+                # Notify all members to contribute
+                for member in group.members.all():
+                    if not Notification.objects.filter(user=member, group=group, message__contains="Contribute").exists():
+                        Notification.objects.create(
+                            user=member,
+                            group=group,
+                            message=f"Reminder: Contribute {group.amount} KSH to {group.name} by {next_payout_date.strftime('%Y-%m-%d')}.",
+                            is_admin=False
+                        )
+                # Notify admin to contribute
+                if not Notification.objects.filter(user=group.admin, group=group, message__contains="Admin: Contribute").exists():
+                    Notification.objects.create(
+                        user=group.admin,
+                        group=group,
+                        message=f"Admin: Contribute {group.amount} KSH to {group.name} by {next_payout_date.strftime('%Y-%m-%d')}.",
+                        is_admin=True
+                    )
+                # Notify admin to initiate payout if cycle is due
+                if timezone.now().date() >= next_payout_date.date() and not Notification.objects.filter(user=group.admin, group=group, message__contains="Payout").exists():
+                    next_payout = group.get_next_payout()
+                    if next_payout:
+                        Notification.objects.create(
+                            user=group.admin,
+                            group=group,
+                            message=f"Admin: Payout {next_payout['amount']} KSH to {next_payout['recipient'].username} for {group.name} by {next_payout['date'].strftime('%Y-%m-%d')}.",
+                            is_admin=True
+                        )
+                        group.last_payout_date = timezone.now()
+                        group.save()
+
+    context = {
+        'groups': groups,
+        'notifications': notifications,
+        'user': request.user,
+    }
+    return render(request, 'contributions/dashboard.html', context)
 
 @login_required
 def create_group(request):
@@ -66,13 +117,8 @@ def group_detail(request, group_id):
         messages.error(request, "You do not have permission to view this group.")
         return redirect('dashboard')
     
-    # Get the last payout for Merry-Go-Round groups
     last_payout = group.payouts.order_by('-date').first() if group.group_type == 'merry_go_round' else None
-    
-    # Get contribution history for the group
     contributions = Contribution.objects.filter(group=group).order_by('-date')
-    
-    # Get next payout for Merry-Go-Round groups
     next_payout = None
     if group.group_type == 'merry_go_round':
         next_payout = group.get_next_payout()

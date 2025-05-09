@@ -22,6 +22,13 @@
             <div class="glassmorphism p-4 rounded-lg">
                 <h4 class="text-lg font-semibold text-white mb-2">{{ group.name }}</h4>
                 <p class="text-md text-gray-300">{{ group.group_type }}</p>
+                {% if group.group_type == 'merry_go_round' and user == group.admin %}
+                <form method="post" action="{% url 'group_detail' group_id=group.id %}" onsubmit="return confirm('Confirm payout of {{ group.get_next_payout.amount|floatformat:2 }} KSH to {{ group.get_next_payout.recipient.username }} for {{ group.name }}?');" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="make_payout" value="1">
+                    <button type="submit" class="button-gradient mt-2 w-full text-center">Initiate Payout</button>
+                </form>
+                {% endif %}
                 <a href="{% url 'group_detail' group_id=group.id %}" class="text-FFD700 hover:text-FFC107 transition duration-300 mt-2 block">View Details</a>
             </div>
             {% endfor %}
@@ -29,6 +36,17 @@
         {% else %}
         <p class="text-gray-300">You are not a member of any groups yet.</p>
         {% endif %}
+    </section>
+    <!-- Notification Section -->
+    <section class="glassmorphism p-6 rounded-lg shadow-lg">
+        <h3 class="text-lg font-semibold mb-4 text-white">Group Notifications</h3>
+        <div id="group-notifications" class="text-white">
+            {% for notification in notifications %}
+            <p>{{ notification.message }}</p>
+            {% empty %}
+            <p>No new notifications</p>
+            {% endfor %}
+        </div>
     </section>
 </main>
 {% endblock %}

@@ -102,6 +102,26 @@
             </ul>
         </nav>
     </div>
+
+    <!-- Notification Bell (Desktop and Mobile) -->
+    <div class="fixed top-4 right-4 z-50">
+        <div class="relative">
+            <i class="ri-notification-3-line text-white text-2xl cursor-pointer" onclick="toggleNotifications()"></i>
+            {% if notifications|length > 0 %}
+            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">{{ notifications|length }}</span>
+            {% endif %}
+            <div class="notification-dropdown hidden absolute right-0 mt-2 w-64 bg-1E3A8A glassmorphism p-4 rounded-lg shadow-lg">
+                <h3 class="text-lg font-semibold text-white mb-2">Notifications</h3>
+                <ul id="notification-list" class="space-y-2 text-white">
+                    {% for notification in notifications %}
+                    <li>{{ notification.message }}</li>
+                    {% empty %}
+                    <li>No new notifications</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
     {% endif %}
 
     <!-- Main Content -->
@@ -142,9 +162,10 @@
             const dropdown = document.querySelector('.dropdown-menu');
             dropdown.classList.toggle('hidden');
         }
-        // Debug: Force mobile view for testing
-        if (window.innerWidth <= 990) {
-            document.body.classList.add('mobile-debug');
+
+        function toggleNotifications() {
+            const notificationDropdown = document.querySelector('.notification-dropdown');
+            notificationDropdown.classList.toggle('hidden');
         }
     </script>
 </body>
