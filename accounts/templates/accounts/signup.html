@@ -7,23 +7,23 @@
         <form method="post">
             {% csrf_token %}
             <div class="mb-4 relative">
-                <i class="ri-mail-line absolute text-gray-600 left-3 top-1/2 transform -translate-y-1/2"></i>
+                <i class="ri-mail-line absolute text-gray-400 left-3 top-1/2 transform -translate-y-1/2"></i>
                 <input type="email" id="email" name="email" class="pl-10" placeholder="Email" required>
             </div>
             <div class="mb-4 relative">
-                <i class="ri-user-line absolute text-gray-600 left-3 top-1/2 transform -translate-y-1/2"></i>
+                <i class="ri-user-line absolute text-gray-400 left-3 top-1/2 transform -translate-y-1/2"></i>
                 <input type="text" id="username" name="username" class="pl-10" placeholder="Username" required>
             </div>
             <div class="mb-4 relative">
-                <i class="ri-user-star-line absolute text-gray-600 left-3 top-1/2 transform -translate-y-1/2"></i>
+                <i class="ri-user-star-line absolute text-gray-400 left-3 top-1/2 transform -translate-y-1/2"></i>
                 <input type="text" id="display_name" name="display_name" class="pl-10" placeholder="Display Name" required>
             </div>
             <div class="mb-4 relative">
-                <i class="ri-lock-line absolute text-gray-600 left-3 top-1/2 transform -translate-y-1/2"></i>
+                <i class="ri-lock-line absolute text-gray-400 left-3 top-1/2 transform -translate-y-1/2"></i>
                 <input type="password" id="password1" name="password1" class="pl-10" placeholder="Password" required>
             </div>
             <div class="mb-6 relative">
-                <i class="ri-lock-line absolute text-gray-600 left-3 top-1/2 transform -translate-y-1/2"></i>
+                <i class="ri-lock-line absolute text-gray-400 left-3 top-1/2 transform -translate-y-1/2"></i>
                 <input type="password" id="password2" name="password2" class="pl-10" placeholder="Confirm Password" required>
             </div>
             <div class="flex justify-between items-center mb-6">
@@ -31,7 +31,7 @@
                     <input type="checkbox" class="mr-2">
                     <span>Remember me</span>
                 </label>
-                <a href="{% url 'forgot_password' %}" class="text-black hover:text-gray-800 text-sm">Forgot Password?</a>
+                <a href="{% url 'forgot_password' %}" class="text-gray-300 hover:text-white text-sm">Forgot Password?</a>
             </div>
             <button type="submit" class="button w-full">Sign Up</button>
         </form>
@@ -46,7 +46,7 @@
                 Continue with Google
             </a>
         </div>
-        <p class="text-center mt-4">Already have an account? <a href="{% url 'login' %}" class="text-black hover:text-gray-800">Login</a></p>
+        <p class="text-center mt-4">Already have an account? <a href="{% url 'login' %}" class="text-gray-300 hover:text-white">Login</a></p>
     </div>
 </div>
 {% endblock %}

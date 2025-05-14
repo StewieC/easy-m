@@ -4,7 +4,7 @@
 <main>
     <section class="card relative">
         <div class="profile-icon">
-            <a href="{% url 'profile' %}" class="flex items-center justify-center w-10 h-10 bg-black rounded-lg text-white font-bold text-lg">
+            <a href="{% url 'profile' %}" class="flex items-center justify-center w-10 h-10 bg-gray-600 rounded-lg text-white font-bold text-lg">
                 {{ user.profile.display_name|slice:":1" }}
             </a>
         </div>
@@ -28,7 +28,7 @@
                     <button type="submit" class="button mt-2 w-full text-center">Initiate Payout</button>
                 </form>
                 {% endif %}
-                <a href="{% url 'group_detail' group_id=group.id %}" class="text-black hover:text-gray-800 mt-2 block">View Details</a>
+                <a href="{% url 'group_detail' group_id=group.id %}" class="text-gray-300 hover:text-white mt-2 block">View Details</a>
             </div>
             {% endfor %}
         </div>

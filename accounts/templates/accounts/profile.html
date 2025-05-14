@@ -18,11 +18,11 @@
         <form method="post">
             {% csrf_token %}
             <div class="mb-4 relative">
-                <i class="ri-user-star-line absolute text-gray-600 left-3 top-1/2 transform -translate-y-1/2"></i>
+                <i class="ri-user-star-line absolute text-gray-400 left-3 top-1/2 transform -translate-y-1/2"></i>
                 <input type="text" id="display_name" name="display_name" value="{{ user.profile.display_name }}" class="pl-10" placeholder="Display Name" required>
             </div>
             <div class="mb-4 relative">
-                <i class="ri-phone-line absolute text-gray-600 left-3 top-1/2 transform -translate-y-1/2"></i>
+                <i class="ri-phone-line absolute text-gray-400 left-3 top-1/2 transform -translate-y-1/2"></i>
                 <input type="text" id="phone_number" name="phone_number" value="{{ user.profile.phone_number|default_if_none:'' }}" class="pl-10" placeholder="Phone Number">
             </div>
             <div class="mb-4">

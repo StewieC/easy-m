@@ -8,8 +8,8 @@
 }
 
 body {
-    background-color: #FFFFFF; /* White background like OKX light mode */
-    color: #000000; /* Black text */
+    background-color: #1F2525; /* Very dark gray background */
+    color: #FFFFFF; /* White text */
     font-size: 16px;
 }
 
@@ -19,25 +19,28 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #FFFFFF;
+    background-color: #2D3333; /* Slightly lighter gray for header */
     padding: 1rem;
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
-    border-bottom: 1px solid #E5E7EB; /* Subtle gray border */
+    border-bottom: 1px solid #4B5151; /* Visible border */
 }
 
-body.mobile-debug .mobile-header,
+body.mobile-debug .mobile-header {
+    display: flex;
+}
+
 @media (max-width: 990px) {
     .mobile-header {
         display: flex;
     }
-}
 
-.logo {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #000000;
+    .logo {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #FFFFFF;
+    }
 }
 
 .menu-icon {
@@ -45,10 +48,11 @@ body.mobile-debug .mobile-header,
     flex-direction: column;
     justify-content: space-between;
     width: 24px;
-    height: 24px;
+} /* Added missing closing brace */
+body.mobile-debug .menu-icon {
+    display: flex;
 }
 
-body.mobile-debug .menu-icon,
 @media (max-width: 990px) {
     .menu-icon {
         display: flex;
@@ -58,7 +62,7 @@ body.mobile-debug .menu-icon,
 .menu-icon span {
     width: 6px;
     height: 6px;
-    background-color: #000000;
+    background-color: #FFFFFF;
     border-radius: 50%;
 }
 
@@ -66,13 +70,20 @@ body.mobile-debug .menu-icon,
     position: fixed;
     top: 0;
     bottom: 0;
-    left: 0;
-    width: 16rem;
-    background-color: #F9FAFB; /* Light gray background for sidebar */
-    border-right: 1px solid #E5E7EB;
+}
+body.mobile-debug .sidebar {
+    display: none;
 }
 
-body.mobile-debug .sidebar,
+@media (max-width: 990px) {
+    .sidebar {
+        display: none;
+    }
+}
+body.mobile-debug .sidebar {
+    display: none;
+}
+
 @media (max-width: 990px) {
     .sidebar {
         display: none;
@@ -93,13 +104,13 @@ nav ul li a {
     display: flex;
     align-items: center;
     padding: 0.5rem 1rem;
-    color: #374151; /* Dark gray text */
+    color: #D1D5DB; /* Light gray text for links */
     border-radius: 0.25rem;
 }
 
 nav ul li a:hover {
-    color: #000000;
-    background-color: #E5E7EB;
+    color: #FFFFFF;
+    background-color: #4B5151; /* Lighter gray for hover */
     transition: color 0.3s ease, background-color 0.3s ease;
 }
 
@@ -109,10 +120,10 @@ nav ul li a:hover {
     right: 1rem;
     top: 4rem;
     width: 12rem;
-    background-color: #FFFFFF;
-    border: 1px solid #E5E7EB;
+    background-color: #2D3333;
+    border: 1px solid #4B5151;
     border-radius: 0.375rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
 }
 
@@ -128,22 +139,20 @@ nav ul li a:hover {
     display: flex;
     align-items: center;
     padding: 0.5rem;
-    color: #374151;
+    color: #D1D5DB;
     border-radius: 0.25rem;
 }
 
 .dropdown-menu ul li a:hover {
-    color: #000000;
-    background-color: #E5E7EB;
-    transition: color 0.3s ease, background-color 0.3s ease;
+    color: #FFFFFF;
 }
 
-main {
-    margin-left: 16rem;
-    padding: 1.5rem;
+body.mobile-debug main {
+    margin-left: 0;
+    padding-top: 4rem;
+    text-align: center;
 }
 
-body.mobile-debug main,
 @media (max-width: 990px) {
     main {
         margin-left: 0;
@@ -152,21 +161,27 @@ body.mobile-debug main,
     }
 }
 
+body.mobile-debug main {
+    margin-left: 0;
+    padding-top: 4rem;
+    text-align: center;
+}
+
 .card {
-    background-color: #FFFFFF;
-    border: 1px solid #E5E7EB;
+    background-color: #3A4040; /* Medium gray for cards */
+    border: 1px solid #4B5151; /* Visible border */
     border-radius: 0.375rem;
     padding: 1.5rem;
 }
 
 .card:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.3s ease;
 }
 
 button,
 .button {
-    background-color: #000000;
+    background-color: #4B5151; /* Lighter gray for buttons */
     color: #FFFFFF;
     padding: 0.75rem 1.5rem;
     border-radius: 9999px;
@@ -174,7 +189,7 @@ button,
 
 button:hover,
 .button:hover {
-    background-color: #111111;
+    background-color: #5A6060; /* Slightly lighter gray for hover */
     transition: background-color 0.3s ease;
 }
 
@@ -185,11 +200,15 @@ button:hover,
     z-index: 50;
 }
 
+.notification-bell i {
+    color: #FFFFFF;
+}
+
 .notification-bell span {
     position: absolute;
     top: -0.25rem;
     right: -0.25rem;
-    background-color: #EF4444;
+    background-color: #EF4444; /* Red for contrast */
     color: #FFFFFF;
     width: 1rem;
     height: 1rem;
@@ -206,16 +225,21 @@ button:hover,
     right: 0;
     top: 2.5rem;
     width: 16rem;
-    background-color: #FFFFFF;
-    border: 1px solid #E5E7EB;
+    background-color: #3A4040;
+    border: 1px solid #4B5151;
     border-radius: 0.375rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     padding: 1rem;
     z-index: 50;
 }
 
 .notification-dropdown:not(.hidden) {
     display: block;
+}
+
+.notification-dropdown h3,
+.notification-dropdown li {
+    color: #FFFFFF;
 }
 
 .messages p {
@@ -237,7 +261,7 @@ button:hover,
 form label {
     display: block;
     margin-bottom: 0.5rem;
-    color: #000000;
+    color: #FFFFFF;
 }
 
 form input,
@@ -245,23 +269,23 @@ form select,
 form textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #E5E7EB;
+    border: 1px solid #4B5151;
     border-radius: 0.375rem;
-    background-color: #F9FAFB;
-    color: #000000;
+    background-color: #2D3333;
+    color: #FFFFFF;
 }
 
 form input:focus,
 form select:focus,
 form textarea:focus {
-    border-color: #000000;
+    border-color: #5A6060;
     outline: none;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #F9FAFB;
+    background-color: #2D3333;
     border-radius: 0.375rem;
     overflow: hidden;
 }
@@ -270,15 +294,15 @@ table th,
 table td {
     padding: 0.75rem 1rem;
     text-align: left;
-    color: #000000;
+    color: #FFFFFF;
 }
 
 table thead tr {
-    border-bottom: 1px solid #E5E7EB;
+    border-bottom: 1px solid #4B5151;
 }
 
 table tbody tr {
-    border-bottom: 1px solid #E5E7EB;
+    border-bottom: 1px solid #4B5151;
 }
 
 table tbody tr:last-child {
@@ -286,16 +310,20 @@ table tbody tr:last-child {
 }
 
 footer {
-    background-color: #FFFFFF;
+    background-color: #1F2525;
     width: 100%;
-    color: #000000;
+    color: #FFFFFF;
     padding: 1.5rem;
     text-align: center;
-    border-top: 1px solid #E5E7EB;
+    border-top: 1px solid #4B5151;
+}
+
+footer a {
+    color: #D1D5DB;
 }
 
 footer a:hover {
-    color: #111111;
+    color: #FFFFFF;
     transition: color 0.3s ease;
 }
 
