@@ -1,40 +1,40 @@
 {% extends 'contributions/base.html' %}
 {% block title %}Create Merry-Go-Round Group - easy-m{% endblock %}
 {% block content %}
-<main class="container mx-auto px-4 py-8">
-    <section class="glassmorphism p-6 rounded-lg shadow-lg mb-8">
-        <h2 class="text-2xl font-semibold mb-4 text-white">Create Merry-Go-Round Group</h2>
+<main>
+    <section class="card">
+        <h2 class="text-2xl font-semibold mb-4">Create Merry-Go-Round Group</h2>
         <form method="post">
             {% csrf_token %}
             <div class="mb-4">
-                <label for="id_name" class="block text-white mb-2">Name:</label>
+                <label for="id_name" class="block mb-2">Name:</label>
                 {{ form.name }}
             </div>
             <div class="mb-4">
-                <label for="id_amount" class="block text-white mb-2">Amount:</label>
+                <label for="id_amount" class="block mb-2">Amount:</label>
                 {{ form.amount }}
             </div>
             <div class="mb-4">
-                <label for="id_phone_number" class="block text-white mb-2">Phone Number:</label>
+                <label for="id_phone_number" class="block mb-2">Phone Number:</label>
                 {{ form.phone_number }}
             </div>
             <div class="mb-4">
-                <label for="id_contribution_period" class="block text-white mb-2">Contribution Period:</label>
+                <label for="id_contribution_period" class="block mb-2">Contribution Period:</label>
                 {{ form.contribution_period }}
             </div>
             <div class="mb-4">
-                <label for="id_payout_cycle" class="block text-white mb-2">Payout Cycle:</label>
+                <label for="id_payout_cycle" class="block mb-2">Payout Cycle:</label>
                 {{ form.payout_cycle }}
             </div>
             <div class="mb-4 flex items-center">
-                <label for="id_savings_enabled" class="text-white mr-2">Enable Savings?</label>
+                <label for="id_savings_enabled" class="mr-2">Enable Savings?</label>
                 {{ form.savings_enabled }}
             </div>
             <div class="mb-4">
-                <label for="id_savings_amount" class="block text-white mb-2">Savings Amount:</label>
+                <label for="id_savings_amount" class="block mb-2">Savings Amount:</label>
                 {{ form.savings_amount }}
             </div>
-            <button type="submit" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out w-full">Create Group</button>
+            <button type="submit" class="button w-full">Create Group</button>
         </form>
     </section>
 </main>

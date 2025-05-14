@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-from celery.schedules import crontab  # Import crontab for Celery scheduling
 
 
 # Quick-start development settings - unsuitable for production
@@ -143,11 +142,11 @@ EMAIL_FROM = 'noreply@hostelnest.com'  # The "from" email address (can be custom
 # Site URL (used for password reset links)
 SITE_URL = 'http://127.0.0.1:8000'  # Update this for production (e.g., 'https://yourdomain.com')
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis running locally
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Store task results
-CELERY_BEAT_SCHEDULE = {
-    'check-group-cycles': {
-        'task': 'contributions.tasks.check_group_cycles',
-        'schedule': crontab(minute='*/5'),  # Every 5 minutes
-    },
-}
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis running locally
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Store task results
+# CELERY_BEAT_SCHEDULE = {
+#     'check-group-cycles': {
+#         'task': 'contributions.tasks.check_group_cycles',
+#         'schedule': crontab(minute='*/5'),  # Every 5 minutes
+#     },
+# }

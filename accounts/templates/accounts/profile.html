@@ -1,9 +1,9 @@
 {% extends 'contributions/base.html' %}
 {% block title %}Profile - easy-m{% endblock %}
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-1E3A8A to-FFD700">
-    <div class="glassmorphism p-8 rounded-2xl shadow-lg max-w-md w-full">
-        <h2 class="text-2xl font-semibold mb-4 text-white text-center">Your Profile</h2>
+<div class="min-h-screen flex items-center justify-center">
+    <div class="card max-w-md w-full">
+        <h2 class="text-2xl font-semibold mb-4 text-center">Your Profile</h2>
         {% if messages %}
         <div class="messages">
             {% for message in messages %}
@@ -14,42 +14,42 @@
 
         {% if request.GET.edit %}
         <!-- Edit Profile Form -->
-        <p class="mb-4 text-gray-300 text-center">Update your details below.</p>
+        <p class="mb-4 text-center">Update your details below.</p>
         <form method="post">
             {% csrf_token %}
             <div class="mb-4 relative">
-                <i class="ri-user-star-line absolute text-gray-300 left-3 top-1/2 transform -translate-y-1/2"></i>
-                <input type="text" id="display_name" name="display_name" value="{{ user.profile.display_name }}" class="pl-10 pr-4 py-3 w-full bg-gray-800 bg-opacity-50 text-white border border-gray-600 rounded-lg focus:border-FFD700 focus:outline-none" placeholder="Display Name" required>
+                <i class="ri-user-star-line absolute text-gray-600 left-3 top-1/2 transform -translate-y-1/2"></i>
+                <input type="text" id="display_name" name="display_name" value="{{ user.profile.display_name }}" class="pl-10" placeholder="Display Name" required>
             </div>
             <div class="mb-4 relative">
-                <i class="ri-phone-line absolute text-gray-300 left-3 top-1/2 transform -translate-y-1/2"></i>
-                <input type="text" id="phone_number" name="phone_number" value="{{ user.profile.phone_number|default_if_none:'' }}" class="pl-10 pr-4 py-3 w-full bg-gray-800 bg-opacity-50 text-white border border-gray-600 rounded-lg focus:border-FFD700 focus:outline-none" placeholder="Phone Number">
+                <i class="ri-phone-line absolute text-gray-600 left-3 top-1/2 transform -translate-y-1/2"></i>
+                <input type="text" id="phone_number" name="phone_number" value="{{ user.profile.phone_number|default_if_none:'' }}" class="pl-10" placeholder="Phone Number">
             </div>
             <div class="mb-4">
-                <label for="bio" class="block text-white mb-2">Bio:</label>
-                <textarea id="bio" name="bio" class="w-full p-3 bg-gray-800 bg-opacity-50 text-white border border-gray-600 rounded-lg focus:border-FFD700 focus:outline-none" rows="4" placeholder="Tell us about yourself">{{ user.profile.bio|default_if_none:'' }}</textarea>
+                <label for="bio" class="block mb-2">Bio:</label>
+                <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself">{{ user.profile.bio|default_if_none:'' }}</textarea>
             </div>
             <div class="flex space-x-4">
-                <button type="submit" class="button-gradient hover:bg-FFC107 text-white font-bold py-3 px-6 rounded-full transition w-full">Save Changes</button>
-                <a href="{% url 'profile' %}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-full transition w-full text-center">Cancel</a>
+                <button type="submit" class="button w-full">Save Changes</button>
+                <a href="{% url 'profile' %}" class="button w-full text-center">Cancel</a>
             </div>
         </form>
         {% else %}
         <!-- View Profile Details -->
         <div class="mb-6">
-            <p class="text-gray-300 mb-2"><span class="font-semibold text-white">Display Name:</span> {{ user.profile.display_name }}</p>
-            <p class="text-gray-300 mb-2"><span class="font-semibold text-white">Phone Number:</span> {{ user.profile.phone_number|default:"Not set" }}</p>
-            <p class="text-gray-300 mb-2"><span class="font-semibold text-white">Bio:</span> {{ user.profile.bio|default:"Not set" }}</p>
-            <p class="text-gray-300 mb-2"><span class="font-semibold text-white">Email:</span> {{ user.email }}</p>
+            <p class="mb-2"><span class="font-semibold">Display Name:</span> {{ user.profile.display_name }}</p>
+            <p class="mb-2"><span class="font-semibold">Phone Number:</span> {{ user.profile.phone_number|default:"Not set" }}</p>
+            <p class="mb-2"><span class="font-semibold">Bio:</span> {{ user.profile.bio|default:"Not set" }}</p>
+            <p class="mb-2"><span class="font-semibold">Email:</span> {{ user.email }}</p>
         </div>
         <div class="flex space-x-4">
-            <a href="{% url 'profile' %}?edit=true" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition w-full text-center">Update Profile</a>
-            <a href="{% url 'logout' %}" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition w-full text-center">Logout</a>
+            <a href="{% url 'profile' %}?edit=true" class="button w-full text-center">Update Profile</a>
+            <a href="{% url 'logout' %}" class="button w-full text-center">Logout</a>
         </div>
         <div class="mt-4">
-            <form method="post" action="{% url 'delete_account' %}" class="w-full">
+            <form method="post" action="{% url 'delete_account' %}">
                 {% csrf_token %}
-                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition w-full" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">Delete Account</button>
+                <button type="submit" class="button w-full bg-red-600 hover:bg-red-700" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">Delete Account</button>
             </form>
         </div>
         {% endif %}

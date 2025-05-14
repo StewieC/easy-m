@@ -1,13 +1,13 @@
 {% extends 'contributions/base.html' %}
 {% block title %}Make Contribution - easy-m{% endblock %}
 {% block content %}
-<main class="container mx-auto px-4 py-8 flex justify-center items-center min-h-screen">
-    <section class="glassmorphism p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-semibold mb-4 text-white text-center">Contribute to {{ group.name }}</h2>
-        <form method="post" class="space-y-4"></form>
+<main class="flex justify-center items-center min-h-screen">
+    <section class="card w-full max-w-md">
+        <h2 class="text-2xl font-semibold mb-4 text-center">Contribute to {{ group.name }}</h2>
+        <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out w-full">Contribute</button>
+            <button type="submit" class="button w-full">Contribute</button>
         </form>
     </section>
 </main>

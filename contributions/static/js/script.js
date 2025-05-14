@@ -1,14 +1,9 @@
-// function toggleSidebar() {
-//     const sidebar = document.querySelector('.sidebar');
-//     sidebar.classList.toggle('active');
-// }
-
 // Ensure sidebar is hidden on small screens by default
 window.addEventListener('resize', () => {
     const sidebar = document.querySelector('.sidebar');
-    if (window.innerWidth <= 1023 && !sidebar.classList.contains('active')) {
+    if (window.innerWidth <= 1023) {
         sidebar.classList.remove('active');
-    } else if (window.innerWidth > 1024) {
+    } else {
         sidebar.classList.add('active');
     }
 });
@@ -20,10 +15,12 @@ if (window.innerWidth <= 1023) {
     document.querySelector('.sidebar').classList.add('active');
 }
 
-// Fade-in animation for cards on load
-document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.glassmorphism');
-    cards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.2}s`;
-    });
-});
+function toggleDropdown() {
+    const dropdown = document.querySelector('.dropdown-menu');
+    dropdown.classList.toggle('hidden');
+}
+
+function toggleNotifications() {
+    const notificationDropdown = document.querySelector('.notification-dropdown');
+    notificationDropdown.classList.toggle('hidden');
+}
