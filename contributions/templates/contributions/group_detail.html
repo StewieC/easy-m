@@ -1,112 +1,141 @@
 {% extends 'contributions/base.html' %}
-{% block title %}{{ group.name }} - easy-m{% endblock %}
+{% block title %}{{ group.name }} Details - easy-m{% endblock %}
+
+{% block page_title %}{{ group.name }}{% endblock %}
+
 {% block content %}
-<main>
-    <section class="card">
-        <h2 class="text-2xl font-semibold mb-4">{{ group.name }}</h2>
-        <p class="mb-2">Type: {{ group.group_type }}</p>
-        <p class="mb-2">Admin: {{ group.admin.username }}</p>
-        <p class="mb-4">Total Contributions: KSH {{ group.total_contributions }}</p>
+<main class="container mx-auto px-4 py-8">
+    <section class="content-card mb-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <div>
+                <h2 class="text-3xl font-semibold text-slate-700">{{ group.name }}</h2>
+                <p class="text-slate-500">Type: <span class="font-medium text-blue-600">{{ group.get_group_type_display }}</span> | Admin: <span class="font-medium">{{ group.admin.username }}</span></p>
+            </div>
+            <div class="mt-4 md:mt-0">
+                <p class="text-lg font-semibold text-slate-600">Total Contributions: <span class="text-green-600">KSH {{ group.total_contributions|floatformat:2 }}</span></p>
+            </div>
+        </div>
 
         {% if group.group_type == 'merry_go_round' %}
-        <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-2">Last Payout</h3>
-            {% if last_payout %}
-            <p>Payout of {{ last_payout.amount }} KSH to {{ last_payout.recipient.username }} on {{ last_payout.date }}</p>
-            {% else %}
-            <p>No payouts yet.</p>
-            {% endif %}
-        </div>
-
-        <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-2">Next Payout</h3>
-            {% if next_payout %}
-            <p>Next payout of {{ next_payout.amount }} KSH to {{ next_payout.recipient.username }}.</p>
-            {% else %}
-            <p>No upcoming payouts scheduled.</p>
-            {% endif %}
-        </div>
-
-        {% if user == group.admin %}
-        <form method="post">
-            {% csrf_token %}
-            <button type="submit" name="make_payout" class="button">Make Payout</button>
-        </form>
-        {% endif %}
-        {% endif %}
-
-        <div class="mt-6">
-            <h3 class="text-lg font-semibold mb-2">Contribution History</h3>
-            {% if contributions %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Member</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for contribution in contributions %}
-                    <tr>
-                        <td>{{ contribution.user.username }}</td>
-                        <td>{{ contribution.amount }} KSH</td>
-                        <td>{{ contribution.date|date:"D, d M Y" }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <p>No contributions have been made yet.</p>
-            {% endif %}
-        </div>
-
-        <div class="mt-6">
-            <h3 class="text-lg font-semibold mb-2">Make a Contribution</h3>
-            <form method="post" class="space-y-4">
-                {% csrf_token %}
-                <div class="flex space-x-2">
-                    {{ form.amount }}
-                    <button type="submit" name="contribute" class="button">Contribute</button>
-                </div>
-                {% if form.errors %}
-                <div class="text-red-600">
-                    {% for error in form.non_field_errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="info-box">
+                <h3 class="info-box-title">Last Payout</h3>
+                {% if last_payout %}
+                <p>Amount: KSH {{ last_payout.amount|floatformat:2 }}</p>
+                <p>Recipient: {{ last_payout.recipient.username }}</p>
+                <p>Date: {{ last_payout.date|date:"D, d M Y" }}</p>
+                {% else %}
+                <p class="text-slate-500">No payouts have been made yet.</p>
                 {% endif %}
-            </form>
-        </div>
-
-        <div class="mt-6">
-            <h3 class="text-lg font-semibold mb-2">Members</h3>
-            <ul class="space-y-2">
-                {% for member in group.members.all %}
-                <li class="card flex justify-between items-center">
-                    <span>{{ member.username }}</span>
-                    {% if user == group.admin and member != group.admin %}
-                    <form method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="user_id" value="{{ member.id }}">
-                        <button type="submit" name="remove_user" class="text-red-600 hover:text-red-800">Remove</button>
-                    </form>
-                    {% endif %}
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        {% if user == group.admin %}
-        <div class="mt-6">
-            <h3 class="text-lg font-semibold mb-2">Add Member</h3>
-            <form method="post" class="flex space-x-2">
-                {% csrf_token %}
-                <input type="email" name="email" placeholder="Enter email" required>
-                <button type="submit" name="add_user" class="button">Add</button>
-            </form>
+            </div>
+            <div class="info-box">
+                <h3 class="info-box-title">Next Payout</h3>
+                {% if next_payout %}
+                <p>Amount: KSH {{ next_payout.amount|floatformat:2 }}</p>
+                <p>Recipient: {{ next_payout.recipient.username }}</p>
+                {% if user == group.admin %}
+                <form method="post" class="mt-3">
+                    {% csrf_token %}
+                    <input type="hidden" name="make_payout" value="1">
+                    <button type="submit" class="btn btn-success btn-sm w-full" onclick="return confirm('Are you sure you want to make this payout to {{ next_payout.recipient.username }}?');">Make Payout Now</button>
+                </form>
+                {% endif %}
+                {% else %}
+                <p class="text-slate-500">No upcoming payouts scheduled or all payouts complete.</p>
+                {% endif %}
+            </div>
         </div>
         {% endif %}
     </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2">
+            <section class="content-card mb-8">
+                <h3 class="content-card-title">Contribution History</h3>
+                {% if contributions %}
+                <div class="overflow-x-auto">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Member</th>
+                                <th>Amount (KSH)</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for contribution in contributions %}
+                            <tr>
+                                <td data-label="Member">{{ contribution.user.username }}</td>
+                                <td data-label="Amount">{{ contribution.amount|floatformat:2 }}</td>
+                                <td data-label="Date">{{ contribution.date|date:"D, d M Y" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-slate-500 py-4 text-center">No contributions have been made to this group yet.</p>
+                {% endif %}
+            </section>
+
+            <section class="content-card">
+                <h3 class="content-card-title">Make a Contribution</h3>
+                <form method="post" class="space-y-4">
+                    {% csrf_token %}
+                    <div class="flex items-end space-x-3">
+                        <div class="flex-grow">
+                            <label for="{{ form.amount.id_for_label }}" class="form-label sr-only">{{ form.amount.label }}</label>
+                            {{ form.amount }}
+                        </div>
+                        <button type="submit" name="contribute" class="btn btn-primary whitespace-nowrap">Contribute Amount</button>
+                    </div>
+                    {% if form.amount.errors %}
+                        <p class="form-error">{{ form.amount.errors.0 }}</p>
+                    {% endif %}
+                    {% if form.non_field_errors %}
+                    <div class="form-error mt-2">
+                        {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </form>
+            </section>
+        </div>
+
+        <div class="lg:col-span-1 space-y-8">
+            <section class="content-card">
+                <h3 class="content-card-title">Group Members</h3>
+                <ul class="space-y-3">
+                    {% for member in group.members.all %}
+                    <li class="member-list-item">
+                        <span><i class="ri-user-fill text-blue-500 mr-2"></i>{{ member.username }}{% if member == group.admin %} <span class="admin-tag">(Admin)</span>{% endif %}</span>
+                        {% if user == group.admin and member != group.admin %}
+                        <form method="post" onsubmit="return confirm('Are you sure you want to remove {{member.username}} from the group?');">
+                            {% csrf_token %}
+                            <input type="hidden" name="user_id" value="{{ member.id }}">
+                            <button type="submit" name="remove_user" class="btn-icon-danger">
+                                <span class="sr-only">Remove user</span>
+                                <i class="ri-user-unfollow-line"></i>
+                            </button>
+                        </form>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            {% if user == group.admin %}
+            <section class="content-card">
+                <h3 class="content-card-title">Add Member</h3>
+                <form method="post" class="flex space-x-2">
+                    {% csrf_token %}
+                    <input type="email" name="email" placeholder="Enter member's email" required class="form-input flex-grow">
+                    <button type="submit" name="add_user" class="btn btn-secondary whitespace-nowrap">Add</button>
+                </form>
+            </section>
+            {% endif %}
+        </div>
+    </div>
 </main>
 {% endblock %}

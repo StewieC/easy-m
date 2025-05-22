@@ -1,32 +1,50 @@
 {% extends 'contributions/base.html' %}
-{% block title %}Contribution History - easy-m{% endblock %}
+{% block title %}Contribution History - {{ group.name }} - easy-m{% endblock %}
+
+{% block page_title %}History for {{ group.name }}{% endblock %}
+
 {% block content %}
-<main class="container mx-auto py-8">
-    <section class="glassmorphism p-6 rounded-lg shadow-lg mb-8">
-        <h2 class="text-2xl font-semibold mb-4 text-white">Contribution History for {{ group.name }}</h2>
-        <table class="w-full text-left">
-            <thead>
-                <tr class="border-b">
-                    <th class="py-3 px-4 text-white">Member</th>
-                    <th class="py-3 px-4 text-white">Amount</th>
-                    <th class="py-3 px-4 text-white">Contribution Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for contribution in contributions %}
-                <tr class="border-b">
-                    <td class="py-3 px-4 text-gray-300">{{ contribution.member.username }}</td>
-                    <td class="py-3 px-4 text-gray-300">KES {{ contribution.amount }}</td>
-                    <td class="py-3 px-4 text-gray-300">{{ contribution.contribution_date|date:"D, d M Y" }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3" class="py-3 px-4 text-gray-400 text-center">No contributions have been made yet.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a href="{% url 'group_detail' group.id %}" class="button-gradient hover:bg-FFC107 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out mt-6 inline-block">Back to Group Details</a>
+<main class="container mx-auto px-4 py-8">
+    <section class="content-card">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="content-card-title !mb-0">Contribution History: {{ group.name }}</h2>
+            <a href="{% url 'group_detail' group.id %}" class="btn btn-secondary btn-sm"><i class="ri-arrow-left-line mr-1"></i> Back to Group</a>
+        </div>
+        
+        {% if contributions %}
+        <div class="overflow-x-auto">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Amount (KES)</th>
+                        <th>Contribution Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contribution in contributions %}
+                    <tr>
+                        <td data-label="Member">{{ contribution.member.username }}</td>
+                        <td data-label="Amount">{{ contribution.amount|floatformat:2 }}</td>
+                        <td data-label="Date">{{ contribution.contribution_date|date:"D, d M Y, P" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center py-6 text-slate-500">
+                            <i class="ri-file-list-3-line text-4xl text-slate-300 mb-2"></i><br>
+                            No contributions have been made yet for this group.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+         <div class="text-center py-10">
+            <i class="ri-file-list-3-line text-6xl text-slate-300 mb-4"></i>
+            <p class="text-slate-500">No contribution history available for this group.</p>
+        </div>
+        {% endif %}
     </section>
 </main>
 {% endblock %}

@@ -1,16 +1,20 @@
 {% extends 'contributions/base.html' %}
 {% block title %}Join Group - easy-m{% endblock %}
+
+{% block page_title %}Join a Group{% endblock %}
+
 {% block content %}
-<main>
-    <section class="card">
-        <h2 class="text-2xl font-semibold mb-4">Join a Group</h2>
-        <form method="post">
+<main class="container mx-auto px-4 py-8 flex justify-center">
+    <section class="form-card max-w-lg w-full">
+        <h2 class="form-card-title">Join an Existing Group</h2>
+        <p class="form-card-subtitle">Enter the unique code provided by the group admin to join.</p>
+        <form method="post" class="space-y-6">
             {% csrf_token %}
-            <div class="mb-4">
-                <label for="join_code" class="block mb-2">Join Code</label>
-                <input type="text" id="join_code" name="join_code" placeholder="Enter group join code" required>
+            <div>
+                <label for="join_code" class="form-label">Group Join Code</label>
+                <input type="text" id="join_code" name="join_code" placeholder="Enter 6-digit code" class="form-input uppercase text-center tracking-widest" required maxlength="6">
             </div>
-            <button type="submit" class="button w-full">Join Group</button>
+            <button type="submit" class="btn btn-primary w-full">Join Group</button>
         </form>
     </section>
 </main>

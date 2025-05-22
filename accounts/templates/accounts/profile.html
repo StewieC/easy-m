@@ -1,58 +1,80 @@
 {% extends 'contributions/base.html' %}
-{% block title %}Profile - easy-m{% endblock %}
-{% block content %}
-<div class="min-h-screen flex items-center justify-center">
-    <div class="card max-w-md w-full">
-        <h2 class="text-2xl font-semibold mb-4 text-center">Your Profile</h2>
-        {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-            <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
-            {% endfor %}
-        </div>
-        {% endif %}
+{% block title %}Your Profile - easy-m{% endblock %}
 
-        {% if request.GET.edit %}
-        <!-- Edit Profile Form -->
-        <p class="mb-4 text-center">Update your details below.</p>
-        <form method="post">
-            {% csrf_token %}
-            <div class="mb-4 relative">
-                <i class="ri-user-star-line absolute text-gray-400 left-3 top-1/2 transform -translate-y-1/2"></i>
-                <input type="text" id="display_name" name="display_name" value="{{ user.profile.display_name }}" class="pl-10" placeholder="Display Name" required>
-            </div>
-            <div class="mb-4 relative">
-                <i class="ri-phone-line absolute text-gray-400 left-3 top-1/2 transform -translate-y-1/2"></i>
-                <input type="text" id="phone_number" name="phone_number" value="{{ user.profile.phone_number|default_if_none:'' }}" class="pl-10" placeholder="Phone Number">
-            </div>
-            <div class="mb-4">
-                <label for="bio" class="block mb-2">Bio:</label>
-                <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself">{{ user.profile.bio|default_if_none:'' }}</textarea>
-            </div>
-            <div class="flex space-x-4">
-                <button type="submit" class="button w-full">Save Changes</button>
-                <a href="{% url 'profile' %}" class="button w-full text-center">Cancel</a>
-            </div>
-        </form>
-        {% else %}
-        <!-- View Profile Details -->
-        <div class="mb-6">
-            <p class="mb-2"><span class="font-semibold">Display Name:</span> {{ user.profile.display_name }}</p>
-            <p class="mb-2"><span class="font-semibold">Phone Number:</span> {{ user.profile.phone_number|default:"Not set" }}</p>
-            <p class="mb-2"><span class="font-semibold">Bio:</span> {{ user.profile.bio|default:"Not set" }}</p>
-            <p class="mb-2"><span class="font-semibold">Email:</span> {{ user.email }}</p>
+{% block page_title %}My Profile{% endblock %}
+
+{% block content %}
+<main class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="md:col-span-1">
+            <section class="content-card text-center">
+                <div class="mx-auto w-24 h-24 rounded-full bg-blue-500 text-white flex items-center justify-center text-4xl font-semibold mb-4">
+                    {{ user.profile.display_name|slice:":1"|upper }}
+                </div>
+                <h2 class="text-2xl font-semibold text-slate-700">{{ user.profile.display_name }}</h2>
+                <p class="text-slate-500">{{ user.email }}</p>
+                <p class="text-sm text-slate-400 mt-1">Username: {{ user.username }}</p>
+
+                {% if not request.GET.edit %}
+                <a href="{% url 'profile' %}?edit=true" class="btn btn-secondary w-full mt-6">Edit Profile</a>
+                {% endif %}
+            </section>
         </div>
-        <div class="flex space-x-4">
-            <a href="{% url 'profile' %}?edit=true" class="button w-full text-center">Update Profile</a>
-            <a href="{% url 'logout' %}" class="button w-full text-center">Logout</a>
+
+        <div class="md:col-span-2">
+            <section class="content-card">
+                {% if request.GET.edit %}
+                <h3 class="content-card-title">Update Your Profile</h3>
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    <div>
+                        <label for="display_name" class="form-label">Display Name</label>
+                        <input type="text" id="display_name" name="display_name" value="{{ user.profile.display_name }}" class="form-input" required>
+                    </div>
+                    <div>
+                        <label for="phone_number" class="form-label">Phone Number</label>
+                        <input type="text" id="phone_number" name="phone_number" value="{{ user.profile.phone_number|default_if_none:'' }}" class="form-input" placeholder="e.g. +2547XXXXXXXX">
+                    </div>
+                    <div>
+                        <label for="bio" class="form-label">Bio</label>
+                        <textarea id="bio" name="bio" rows="4" class="form-input" placeholder="Tell us a little about yourself...">{{ user.profile.bio|default_if_none:'' }}</textarea>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button type="submit" class="btn btn-primary flex-grow">Save Changes</button>
+                        <a href="{% url 'profile' %}" class="btn btn-secondary-outline flex-grow text-center">Cancel</a>
+                    </div>
+                </form>
+                {% else %}
+                <h3 class="content-card-title">Profile Details</h3>
+                <div class="space-y-4">
+                    <div class="profile-detail-item">
+                        <span class="font-semibold">Display Name:</span>
+                        <span>{{ user.profile.display_name }}</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <span class="font-semibold">Email Address:</span>
+                        <span>{{ user.email }}</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <span class="font-semibold">Phone Number:</span>
+                        <span>{{ user.profile.phone_number|default:"Not set" }}</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <span class="font-semibold">Bio:</span>
+                        <p class="text-slate-600 whitespace-pre-line">{{ user.profile.bio|default:"No bio provided."|linebreaksbr }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 border-t pt-6">
+                    <h4 class="text-lg font-semibold text-red-600 mb-3">Account Actions</h4>
+                    <form method="post" action="{% url 'delete_account' %}" onsubmit="return confirm('Are you absolutely sure you want to delete your account? This action is irreversible and will remove all your data.');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger w-full sm:w-auto">Delete My Account</button>
+                    </form>
+                </div>
+                {% endif %}
+            </section>
         </div>
-        <div class="mt-4">
-            <form method="post" action="{% url 'delete_account' %}">
-                {% csrf_token %}
-                <button type="submit" class="button w-full bg-red-600 hover:bg-red-700" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">Delete Account</button>
-            </form>
-        </div>
-        {% endif %}
     </div>
-</div>
+</main>
 {% endblock %}

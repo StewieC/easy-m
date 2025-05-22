@@ -1,40 +1,51 @@
 {% extends 'contributions/base.html' %}
 {% block title %}Create Merry-Go-Round Group - easy-m{% endblock %}
+
+{% block page_title %}New Merry-Go-Round Group{% endblock %}
+
 {% block content %}
-<main>
-    <section class="card">
-        <h2 class="text-2xl font-semibold mb-4">Create Merry-Go-Round Group</h2>
-        <form method="post">
+<main class="container mx-auto px-4 py-8">
+    <section class="form-card">
+        <h2 class="form-card-title">Create Merry-Go-Round Group</h2>
+        <p class="form-card-subtitle">Set up the details for your merry-go-round.</p>
+        <form method="post" class="space-y-6">
             {% csrf_token %}
-            <div class="mb-4">
-                <label for="id_name" class="block mb-2">Name:</label>
+            <div>
+                <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }}</label>
                 {{ form.name }}
+                {% if form.name.errors %}<p class="form-error">{{ form.name.errors.0 }}</p>{% endif %}
             </div>
-            <div class="mb-4">
-                <label for="id_amount" class="block mb-2">Amount:</label>
+            <div>
+                <label for="{{ form.amount.id_for_label }}" class="form-label">{{ form.amount.label }}</label>
                 {{ form.amount }}
+                {% if form.amount.errors %}<p class="form-error">{{ form.amount.errors.0 }}</p>{% endif %}
             </div>
-            <div class="mb-4">
-                <label for="id_phone_number" class="block mb-2">Phone Number:</label>
+            <div>
+                <label for="{{ form.phone_number.id_for_label }}" class="form-label">{{ form.phone_number.label }}</label>
                 {{ form.phone_number }}
+                {% if form.phone_number.errors %}<p class="form-error">{{ form.phone_number.errors.0 }}</p>{% endif %}
             </div>
-            <div class="mb-4">
-                <label for="id_contribution_period" class="block mb-2">Contribution Period:</label>
+            <div>
+                <label for="{{ form.contribution_period.id_for_label }}" class="form-label">{{ form.contribution_period.label }}</label>
                 {{ form.contribution_period }}
+                {% if form.contribution_period.errors %}<p class="form-error">{{ form.contribution_period.errors.0 }}</p>{% endif %}
             </div>
-            <div class="mb-4">
-                <label for="id_payout_cycle" class="block mb-2">Payout Cycle:</label>
+            <div>
+                <label for="{{ form.payout_cycle.id_for_label }}" class="form-label">{{ form.payout_cycle.label }}</label>
                 {{ form.payout_cycle }}
+                {% if form.payout_cycle.errors %}<p class="form-error">{{ form.payout_cycle.errors.0 }}</p>{% endif %}
             </div>
-            <div class="mb-4 flex items-center">
-                <label for="id_savings_enabled" class="mr-2">Enable Savings?</label>
+            <div class="flex items-center space-x-3">
                 {{ form.savings_enabled }}
+                <label for="{{ form.savings_enabled.id_for_label }}" class="form-label -mb-0">{{ form.savings_enabled.label_tag }}</label>
+                {% if form.savings_enabled.errors %}<p class="form-error">{{ form.savings_enabled.errors.0 }}</p>{% endif %}
             </div>
-            <div class="mb-4">
-                <label for="id_savings_amount" class="block mb-2">Savings Amount:</label>
+            <div>
+                <label for="{{ form.savings_amount.id_for_label }}" class="form-label">{{ form.savings_amount.label }}</label>
                 {{ form.savings_amount }}
+                {% if form.savings_amount.errors %}<p class="form-error">{{ form.savings_amount.errors.0 }}</p>{% endif %}
             </div>
-            <button type="submit" class="button w-full">Create Group</button>
+            <button type="submit" class="btn btn-primary w-full">Create Group</button>
         </form>
     </section>
 </main>

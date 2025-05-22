@@ -9,146 +9,106 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>{% block title %}easy-m{% endblock %}</title>
 </head>
-<body class="font-inter flex flex-col min-h-screen">
-    {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}
-    <!-- Mobile Header -->
+<body class="font-poppins bg-slate-50 text-slate-800 flex flex-col min-h-screen antialiased">
+    {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' and request.path != '/accounts/forgot-password/' and request.path != '/accounts/reset-password/' %}
     <header class="mobile-header">
-        <a href="{% url 'dashboard' %}" class="logo">easy-m</a>
-        <div class="menu-icon" onclick="toggleDropdown()">
-            <span></span>
-            <span></span>
-            <span></span>
+        <a href="{% url 'dashboard' %}" class="logo-text">easy-m</a>
+        <div class="menu-icon" id="mobileMenuIcon">
+            <i class="ri-menu-line"></i>
         </div>
     </header>
 
-    <!-- Dropdown Menu for Mobile -->
-    <div class="dropdown-menu hidden">
+    <div class="dropdown-menu" id="mobileDropdownMenu">
+        <div class="dropdown-header">
+            <a href="{% url 'dashboard' %}" class="logo-text">easy-m</a>
+            <button id="closeMobileMenu" class="close-menu-btn" title="Close menu" aria-label="Close menu">
+                <span class="sr-only">Close menu</span>
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
         <ul>
-            <li>
-                <a href="{% url 'dashboard' %}" class="flex items-center">
-                    <i class="ri-dashboard-line mr-2"></i> Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'create_group' %}" class="flex items-center">
-                    <i class="ri-group-line mr-2"></i> Create Group
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'join_group' %}" class="flex items-center">
-                    <i class="ri-user-add-line mr-2"></i> Join Group
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'profile' %}" class="flex items-center">
-                    <i class="ri-user-line mr-2"></i> Profile
-                </a>
-            </li>
-            <li>
-                <a href="#" class="flex items-center">
-                    <i class="ri-question-line mr-2"></i> Help
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'logout' %}" class="flex items-center">
-                    <i class="ri-logout-box-line mr-2"></i> Logout
-                </a>
-            </li>
+            <li><a href="{% url 'dashboard' %}" class="nav-link"><i class="ri-dashboard-3-line"></i> Dashboard</a></li>
+            <li><a href="{% url 'create_group' %}" class="nav-link"><i class="ri-add-circle-line"></i> Create Group</a></li>
+            <li><a href="{% url 'join_group' %}" class="nav-link"><i class="ri-group-2-line"></i> Join Group</a></li>
+            <li><a href="{% url 'profile' %}" class="nav-link"><i class="ri-user-settings-line"></i> Profile</a></li>
+            <li><a href="#" class="nav-link"><i class="ri-question-line"></i> Help</a></li>
+            <li><a href="{% url 'logout' %}" class="nav-link logout-link"><i class="ri-logout-box-r-line"></i> Logout</a></li>
         </ul>
     </div>
 
-    <!-- Desktop Sidebar -->
     <div class="sidebar">
         <div class="sidebar-logo">
-            <a href="{% url 'dashboard' %}" class="logo">easy-m</a>
+            <a href="{% url 'dashboard' %}" class="logo-text">easy-m</a>
         </div>
-        <nav>
+        <nav class="sidebar-nav">
             <ul>
-                <li>
-                    <a href="{% url 'dashboard' %}" class="flex items-center">
-                        <i class="ri-dashboard-line mr-2"></i> Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'create_group' %}" class="flex items-center">
-                        <i class="ri-group-line mr-2"></i> Create Group
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'join_group' %}" class="flex items-center">
-                        <i class="ri-user-add-line mr-2"></i> Join Group
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'profile' %}" class="flex items-center">
-                        <i class="ri-user-line mr-2"></i> Profile
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center">
-                        <i class="ri-question-line mr-2"></i> Help
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'logout' %}" class="flex items-center">
-                        <i class="ri-logout-box-line mr-2"></i> Logout
-                    </a>
-                </li>
+                <li><a href="{% url 'dashboard' %}" class="nav-link {% if request.path == '/dashboard/' %}active{% endif %}"><i class="ri-dashboard-3-line"></i> Dashboard</a></li>
+                <li><a href="{% url 'create_group' %}" class="nav-link {% if 'create_group' in request.path %}active{% endif %}"><i class="ri-add-circle-line"></i> Create Group</a></li>
+                <li><a href="{% url 'join_group' %}" class="nav-link {% if 'join_group' in request.path %}active{% endif %}"><i class="ri-group-2-line"></i> Join Group</a></li>
+                <li><a href="{% url 'profile' %}" class="nav-link {% if 'profile' in request.path %}active{% endif %}"><i class="ri-user-settings-line"></i> Profile</a></li>
+                <li><a href="#" class="nav-link"><i class="ri-question-line"></i> Help</a></li>
             </ul>
         </nav>
+        <div class="sidebar-footer">
+            <a href="{% url 'logout' %}" class="nav-link logout-link"><i class="ri-logout-box-r-line"></i> Logout</a>
+        </div>
     </div>
 
-    <!-- Notification Bell -->
-    <div class="notification-bell">
-        <i class="ri-notification-3-line text-2xl cursor-pointer"></i>
-        {% if notifications|length > 0 %}
-        <span>{{ notifications|length }}</span>
-        {% endif %}
-        <div class="notification-dropdown hidden">
-            <h3 class="text-lg font-semibold mb-2">Notifications</h3>
-            <ul id="notification-list" class="space-y-2">
-                {% for notification in notifications %}
-                <li>{{ notification.message }}</li>
-                {% empty %}
-                <li>No new notifications</li>
-                {% endfor %}
-            </ul>
+    <div class="top-bar">
+        <div class="page-title">
+            {% block page_title %}Dashboard{% endblock %}
+        </div>
+        <div class="user-actions">
+            <div class="notification-bell" id="notificationBell">
+                <i class="ri-notification-3-line"></i>
+                {% if notifications|length > 0 %}
+                <span class="notification-count">{{ notifications|length }}</span>
+                {% endif %}
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <h3 class="dropdown-header-title">Notifications</h3>
+                    <ul id="notification-list">
+                        {% for notification in notifications %}
+                        <li class="notification-item">{{ notification.message }}</li>
+                        {% empty %}
+                        <li class="notification-item-empty">No new notifications</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <a href="{% url 'profile' %}" class="profile-link">
+                <span class="profile-initials">{{ user.profile.display_name|slice:":1"|upper }}</span>
+                <span class="profile-name">{{ user.username }}</span>
+            </a>
         </div>
     </div>
     {% endif %}
 
-    <!-- Main Content -->
-    <div class="{% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}ml-64 p-6{% else %}p-6{% endif %} flex-1">
+    <div class="main-content {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' and request.path != '/accounts/forgot-password/' and request.path != '/accounts/reset-password/' %}main-content-authenticated{% endif %}">
         {% if messages %}
-        <div class="messages">
+        <div class="messages-container">
             {% for message in messages %}
-            <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                {{ message }}
-            </p>
+            <div class="message-item {% if message.tags %}message-{{ message.tags }}{% endif %}" role="alert">
+                <span>{{ message }}</span>
+                <button type="button" class="message-close-btn" onclick="this.parentElement.style.display='none';">&times;</button>
+            </div>
             {% endfor %}
         </div>
         {% endif %}
         {% block content %}{% endblock %}
     </div>
 
-    <!-- Footer -->
-    {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' %}
-    <footer>
-        <div class="container mx-auto flex flex-col md:flex-row justify-center items-center">
-            <div class="mb-4 md:mb-0">
-                <p>© 2025 easy-m. All rights reserved.</p>
-            </div>
-            <div class="flex space-x-4 mt-4 md:mt-0">
-                <a href="#" title="Instagram"><i class="ri-instagram-line text-xl"></i></a>
-                <a href="#" title="Twitter"><i class="ri-twitter-x-line text-xl"></i></a>
-                <a href="#" title="LinkedIn"><i class="ri-linkedin-fill text-xl"></i></a>
-                <a href="#" title="Google"><i class="ri-google-fill text-xl"></i></a>
-            </div>
+    {% if user.is_authenticated and request.path != '/accounts/login/' and request.path != '/accounts/signup/' and request.path != '/accounts/forgot-password/' and request.path != '/accounts/reset-password/' %}
+    <footer class="app-footer">
+        <p>&copy; {% now "Y" %} easy-m. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#" title="Instagram"><i class="ri-instagram-line"></i></a>
+            <a href="#" title="Twitter"><i class="ri-twitter-x-line"></i></a>
+            <a href="#" title="LinkedIn"><i class="ri-linkedin-box-line"></i></a>
         </div>
     </footer>
     {% endif %}
