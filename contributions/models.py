@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 from datetime import datetime, timedelta
+from contributions.utils import validate_phone_number
 
 class Group(models.Model):
     GROUP_TYPES = (
@@ -94,11 +95,13 @@ class Contribution(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='contributions')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    phone_number = models.CharField(max_length=15, default="+254700000000", validators=[validate_phone_number])  # Add phone validation
+    transaction_id = models.CharField(max_length=50, null=True, blank=True)
+    status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Success', 'Success'), ('Failed', 'Failed')], default='Pending')
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user.username} contributed {self.amount} to {self.group.name}"
-
 class Payout(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='payouts')
     recipient = models.ForeignKey(User, on_delete=models.CASCADE)
