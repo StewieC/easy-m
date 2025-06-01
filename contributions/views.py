@@ -227,6 +227,7 @@ def initiate_mpesa_payment(request, group_id):
         return redirect('group_detail', group_id=group_id)
     return redirect('group_detail', group_id=group_id)
 
+
 @csrf_exempt  # M-Pesa callbacks don’t include CSRF tokens
 def mpesa_callback(request):
     from .mpesa.callbacks import process_callback

@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+logger.debug("MpesaConfig loaded: %s", locals().get('MpesaConfig', 'Not found'))
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,8 +31,7 @@ SECRET_KEY = 'django-insecure-y4&!3#x7x3&h1jhdjij_-%42bhrh^l5&+_65pg7jt9)jdnr8##
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '8320-129-222-187-71.ngrok-free.app']
 
 # Application definition
 
