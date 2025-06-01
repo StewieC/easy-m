@@ -11,4 +11,6 @@ urlpatterns = [
     # path('group/<int:group_id>/contribute/', views.make_contribution, name='make_contribution'),
     path('join-group/', views.join_group, name='join_group'),
     # path('help/', views.help_page, name='help_page'),
+    path('group/<int:group_id>/initiate-payment/', views.initiate_mpesa_payment, name='initiate_mpesa_payment'),
+    path('mpesa/callback/', views.mpesa_callback, name='mpesa_callback'),
 ]

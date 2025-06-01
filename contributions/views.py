@@ -6,6 +6,9 @@ from .forms import GroupTypeForm, ContributionGroupForm, MerryGoRoundGroupForm, 
 from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import datetime, timedelta
+import re
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 @login_required
 def dashboard(request):
@@ -197,3 +200,36 @@ def join_group(request):
             messages.warning(request, "You are already a member of this group.")
         return redirect('group_detail', group_id=group.id)
     return render(request, 'contributions/join_group.html')
+
+@login_required
+def initiate_mpesa_payment(request, group_id):
+    group = get_object_or_404(Group, id=group_id)
+    if request.user not in group.members.all() and request.user != group.admin:
+        messages.error(request, "You do not have permission to contribute to this group.")
+        return redirect('group_detail', group_id=group_id)
+
+    if request.method == 'POST':
+        amount = float(request.POST.get('amount', 0))
+        phone_number = request.POST.get('phone_number', '')
+        if not re.match(r'^\+254[17]\d{8}$', phone_number):
+            messages.error(request, "Invalid phone number format. Use +2547XXXXXXXX or +2541XXXXXXXX.")
+            return redirect('group_detail', group_id=group_id)
+
+        from .mpesa.stk_push import initiate_stk_push
+        response = initiate_stk_push(amount, phone_number, group.phone_number, group.id)
+        if response.get('ResponseCode') == '0':
+            Contribution.objects.create(
+                group=group, user=request.user, amount=amount, phone_number=phone_number, status='Pending'
+            )
+            messages.success(request, "Payment request sent. Please authorize on your phone.")
+        else:
+            messages.error(request, f"Failed to initiate payment: {response.get('errorMessage', 'Unknown error')}")
+        return redirect('group_detail', group_id=group_id)
+    return redirect('group_detail', group_id=group_id)
+
+@csrf_exempt  # M-Pesa callbacks don’t include CSRF tokens
+def mpesa_callback(request):
+    from .mpesa.callbacks import process_callback
+    if request.method == 'POST':
+        process_callback(request.body)
+    return JsonResponse({'ResultCode': 0, 'ResultDesc': 'Accepted'})

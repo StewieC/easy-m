@@ -150,3 +150,15 @@ SITE_URL = 'http://127.0.0.1:8000'  # Update this for production (e.g., 'https:/
 #         'schedule': crontab(minute='*/5'),  # Every 5 minutes
 #     },
 # }
+
+from decouple import config
+
+MpesaConfig = {
+    'CONSUMER_KEY': config('MPESA_CONSUMER_KEY'),
+    'CONSUMER_SECRET': config('MPESA_CONSUMER_SECRET'),
+    'PASSKEY': config('MPESA_PASSKEY'),
+    'SHORTCODE': config('MPESA_SHORTCODE'),
+    'CALLBACK_URL': config('MPESA_CALLBACK_URL'),
+    'AUTH_URL': config('MPESA_AUTH_URL'),
+    'STK_PUSH_URL': config('MPESA_STK_PUSH_URL'),
+}
