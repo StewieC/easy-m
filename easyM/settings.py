@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-y4&!3#x7x3&h1jhdjij_-%42bhrh^l5&+_65pg7jt9)jdnr8##
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '8320-129-222-187-71.ngrok-free.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '2236-129-222-187-71.ngrok-free.app']
 
 # Application definition
 
@@ -155,14 +155,37 @@ SITE_URL = 'http://127.0.0.1:8000'  # Update this for production (e.g., 'https:/
 #     },
 # }
 
+import logging
 from decouple import config
+from django.conf import settings
 
-MpesaConfig = {
-    'CONSUMER_KEY': config('MPESA_CONSUMER_KEY'),
-    'CONSUMER_SECRET': config('MPESA_CONSUMER_SECRET'),
-    'PASSKEY': config('MPESA_PASSKEY'),
-    'SHORTCODE': config('MPESA_SHORTCODE'),
-    'CALLBACK_URL': config('MPESA_CALLBACK_URL'),
-    'AUTH_URL': config('MPESA_AUTH_URL'),
-    'STK_PUSH_URL': config('MPESA_STK_PUSH_URL'),
-}
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+# Debug before loading
+logger.debug("Starting settings.py")
+
+try:
+    MpesaConfig = {
+        'CONSUMER_KEY': config('MPESA_CONSUMER_KEY'),
+        'CONSUMER_SECRET': config('MPESA_CONSUMER_SECRET'),
+        'PASSKEY': config('MPESA_PASSKEY'),
+        'SHORTCODE': config('MPESA_SHORTCODE'),
+        'CALLBACK_URL': config('MPESA_CALLBACK_URL'),
+        'AUTH_URL': config('MPESA_AUTH_URL'),
+        'STK_PUSH_URL': config('MPESA_STK_PUSH_URL'),
+    }
+    logger.debug("MpesaConfig loaded: %s", MpesaConfig)
+
+    # Attach MpesaConfig to settings
+    settings.MpesaConfig = MpesaConfig
+
+except Exception as e:
+    logger.error("Error loading MpesaConfig: %s", str(e))
+    raise
+
+# Other Django settings
+DEBUG = True
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '2236-129-222-187-71.ngrok-free.app']
+# ... (rest of your settings)
