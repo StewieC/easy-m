@@ -184,7 +184,3 @@ except Exception as e:
     logger.error("Error loading MpesaConfig: %s", str(e))
     raise
 
-# Other Django settings
-DEBUG = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '2236-129-222-187-71.ngrok-free.app']
-# ... (rest of your settings)
