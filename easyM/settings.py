@@ -15,7 +15,6 @@ from pathlib import Path
 import logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-logger.debug("MpesaConfig loaded: %s", locals().get('MpesaConfig', 'Not found'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +30,7 @@ SECRET_KEY = 'django-insecure-y4&!3#x7x3&h1jhdjij_-%42bhrh^l5&+_65pg7jt9)jdnr8##
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0200-2c0f-2a80-248c-4d10-bdb3-a30b-4c45-64cb.ngrok-free.app']
+ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
@@ -156,7 +155,7 @@ SITE_URL = 'http://127.0.0.1:8000'  # Update this for production (e.g., 'https:/
 # }
 
 import logging
-from decouple import config
+# from decouple import config
 from django.conf import settings
 
 # Set up logging
@@ -166,22 +165,22 @@ logger = logging.getLogger(__name__)
 # Debug before loading
 logger.debug("Starting settings.py")
 
-try:
-    MpesaConfig = {
-        'CONSUMER_KEY': config('MPESA_CONSUMER_KEY'),
-        'CONSUMER_SECRET': config('MPESA_CONSUMER_SECRET'),
-        'PASSKEY': config('MPESA_PASSKEY'),
-        'SHORTCODE': config('MPESA_SHORTCODE'),
-        'CALLBACK_URL': config('MPESA_CALLBACK_URL'),
-        'AUTH_URL': config('MPESA_AUTH_URL'),
-        'STK_PUSH_URL': config('MPESA_STK_PUSH_URL'),
-    }
-    logger.debug("MpesaConfig loaded: %s", MpesaConfig)
+# try:
+#     MpesaConfig = {
+#         'CONSUMER_KEY': config('MPESA_CONSUMER_KEY'),
+#         'CONSUMER_SECRET': config('MPESA_CONSUMER_SECRET'),
+#         'PASSKEY': config('MPESA_PASSKEY'),
+#         'SHORTCODE': config('MPESA_SHORTCODE'),
+#         'CALLBACK_URL': config('MPESA_CALLBACK_URL'),
+#         'AUTH_URL': config('MPESA_AUTH_URL'),
+#         'STK_PUSH_URL': config('MPESA_STK_PUSH_URL'),
+#     }
+#     logger.debug("MpesaConfig loaded: %s", MpesaConfig)
 
-    # Attach MpesaConfig to settings
-    settings.MpesaConfig = MpesaConfig
+#     # Attach MpesaConfig to settings
+#     settings.MpesaConfig = MpesaConfig
 
-except Exception as e:
-    logger.error("Error loading MpesaConfig: %s", str(e))
-    raise
+# except Exception as e:
+#     logger.error("Error loading MpesaConfig: %s", str(e))
+#     raise
 
